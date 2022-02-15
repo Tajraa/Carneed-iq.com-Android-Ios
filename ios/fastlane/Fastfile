@@ -1,0 +1,173 @@
+default_platform(:ios)
+
+DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"]
+DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"]
+PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"]
+TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
+TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
+USER_NAME=ENV["FASTLANE_USER"]
+APPSTORE_CONNECT_KEY=ENV["APPSTORE_CONNECT_KEY"]
+
+def delete_temp_keychain(name)
+  delete_keychain(
+    name: name
+  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+
+def create_temp_keychain(name, password)
+  create_keychain(
+    name: name,
+    password: password,
+    unlock: false,
+    timeout: 3600
+  )
+end
+
+def ensure_temp_keychain(name, password)
+  delete_temp_keychain(name)
+  create_temp_keychain(name, password)
+end
+
+platform :ios do
+    desc "Upload to App Store"
+    lane :upload do
+      
+       keychain_name = TEMP_KEYCHAIN_USER
+       keychain_password = TEMP_KEYCHAIN_PASSWORD
+       ensure_temp_keychain(keychain_name, keychain_password)
+
+    match(
+      type: 'appstore',
+      app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+      git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
+      readonly: true,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password 
+    )
+
+
+# increment_version_number(
+#   bump_type: "patch" # Automatically increment patch version number
+# )
+    increment_build_number
+
+
+
+    gym(
+      configuration: "Release",
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { 
+            DEVELOPER_APP_ID => PROVISIONING_PROFILE_SPECIFIER
+        }
+      }
+    )
+    
+    api_key = app_store_connect_api_key(
+    key_id: "F79DX8958M",
+    issuer_id: "69a6de91-96a8-47e3-e053-5b8c7c11a4d1",
+    key_content: "#{APPSTORE_CONNECT_KEY}".gsub('\n', '\\n'),
+    duration: 1200, # optional (maximum 1200)
+    in_house: false # optional but may be required if using match/sigh
+     )
+
+    deliver(
+    username: "#{USER_NAME}",
+    submit_for_review: true,
+    force: true,
+    metadata_path: "./metadata",
+    app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+    ipa: "./Runner.ipa",
+    api_key: api_key,
+    precheck_include_in_app_purchases: false
+    )
+    
+  
+
+    delete_temp_keychain(keychain_name)
+  end
+end
+
+  platform :ios do
+    desc "beta"
+  lane :beta do
+    keychain_name = TEMP_KEYCHAIN_USER
+    keychain_password = TEMP_KEYCHAIN_PASSWORD
+    ensure_temp_keychain(keychain_name, keychain_password)
+
+    match(
+      type: 'appstore',
+      app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+      git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
+      readonly: true,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password 
+    )
+  
+#     increment_version_number(
+#   bump_type: "patch" # Automatically increment patch version number
+# )
+# increment_build_number
+    gym(
+      configuration: "Release",
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { 
+            DEVELOPER_APP_ID => PROVISIONING_PROFILE_SPECIFIER
+        }
+      }
+    )
+
+    pilot(
+      apple_id: "#{DEVELOPER_APP_ID}",
+      app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+      skip_waiting_for_build_processing: true,
+      skip_submission: true,
+      distribute_external: false,
+      notify_external_testers: false,
+      ipa: "./Runner.ipa"
+    )
+
+    delete_temp_keychain(keychain_name)
+  end
+end
+
+
+
+
+  platform :ios do
+    desc "locale test"
+    lane :locale do
+      
+
+   increment_version_number(
+     bump_type: "patch" # Automatically increment patch version number
+    )
+    
+
+  
+
+    gym(
+      configuration: "Release",
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store"
+     
+    )
+    
+   
+    deliver(
+      username:"abdulkader.tahhan@hotmail.com",
+      submit_for_review: true,
+      force: true,
+      skip_app_version_update:false,
+      metadata_path: "./metadata",
+      automatic_release:false
+    )
+   
+  end
+end

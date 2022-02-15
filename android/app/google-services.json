@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "275975164239",
+    "project_id": "carneed-iq",
+    "storage_bucket": "carneed-iq.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275975164239:android:85f1edadffb8632e69f53a",
+        "android_client_info": {
+          "package_name": "com.progiom.Carneed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275975164239-bqcj6hilfdqd9t3q04lj7b1loll6e0kr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.progiom.Carneed",
+            "certificate_hash": "7a58a81acc3f40565e09939317453330bddbc749"
+          }
+        },
+        {
+          "client_id": "275975164239-rgrk8qpemb1j03envruvhfj9dt070rdg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.progiom.Carneed",
+            "certificate_hash": "34ed9f6c833f67f42202cc378c97e404bf84fd63"
+          }
+        },
+        {
+          "client_id": "275975164239-m4j5nfkuf3j44qpmo444s3f2s17s39j3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFBPgRGBgWrjk0JcoRnL-SAUtfGOXWM7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275975164239-m4j5nfkuf3j44qpmo444s3f2s17s39j3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

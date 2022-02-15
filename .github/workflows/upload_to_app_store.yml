@@ -1,0 +1,51 @@
+name: upload to app store
+
+on:
+  push:
+    tags:
+      - 'ios_v*'
+  
+  
+  workflow_dispatch:
+      
+jobs:
+ deploy_ios:
+    name: Deploy build to appstore
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code from ref
+        uses: actions/checkout@v2
+        with:
+          ref: $
+      - name: Run Flutter tasks
+        uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+      - uses: actions/cache@v2
+        with:
+          path: $/.pub-cache
+          key: $-pub-$
+          restore-keys: $-pub-
+
+      - run: flutter pub get
+      - run: flutter build ios --release --no-codesign
+      - name: Deploy iOS to via Fastlane
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: beta
+          subdirectory: ios
+        env:
+          APPSTORE_CONNECT_KEY: '$'
+          FASTLANE_USER: '$'
+          FASTLANE_PASSWORD: '$'
+          APP_STORE_CONNECT_TEAM_ID: '$'
+          DEVELOPER_APP_ID: '$'
+          DEVELOPER_APP_IDENTIFIER: '$'
+          DEVELOPER_PORTAL_TEAM_ID: '$'
+          FASTLANE_APPLE_ID: '$'
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: '$'
+          MATCH_PASSWORD: '$'
+          GIT_AUTHORIZATION: '$'
+          PROVISIONING_PROFILE_SPECIFIER: '$'
+          TEMP_KEYCHAIN_PASSWORD: '$'
+          TEMP_KEYCHAIN_USER: '$'

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="885.713" height="626.005" viewBox="0 0 885.713 626.005">
+  <defs>
+    <filter id="Path_2148" x="0" y="0" width="885.713" height="626.005" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_2148)">
+    <path id="Path_2148-2" data-name="Path 2148" d="M567.849-91.278c-34.5,2.572-60.972,33.011-62.4,70.24-.9,23.339-8.643,46.9-21.853,65.457-26.421,37.122-69.7,56.477-112.687,63.046s-86.8,4.234-130.026-.064C70.177,90.431,16.358,203.108-25.529,241.074c-46.417,42.075-109.67,39.433-162.189,67.96-24.3,13.2-43.506,42.571-38.693,70.636a84.8,84.8,0,0,1,1.376,16.715l-1.286,45.643c-1.123,39.885,27.971,73.2,64.981,74.41H558.421c37.011,1.212,67.926-30.14,69.05-70.025l13.056-463.5c1.2-42.716-32.076-77.219-71.64-74.27Z" transform="translate(649.56 522.47) rotate(180)" fill="#2b4081"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16.928" height="15.412" viewBox="0 0 16.928 15.412">
+  <g id="sort-down" transform="translate(0 -20.609)">
+    <g id="Group_3968" data-name="Group 3968" transform="translate(0 20.609)">
+      <g id="Group_3967" data-name="Group 3967" transform="translate(0 0)">
+        <path id="Path_2153" data-name="Path 2153" d="M.94,90.642h9.475V88.761H.94a.94.94,0,0,0,0,1.881Z" transform="translate(0 -86.253)" fill="#cc9a52"/>
+        <path id="Path_2154" data-name="Path 2154" d="M.94,193.2h9.475v-1.881H.94a.94.94,0,0,0,0,1.881Z" transform="translate(0 -185.037)" fill="#cc9a52"/>
+        <path id="Path_2155" data-name="Path 2155" d="M.94,293.874h0a.94.94,0,0,0,0,1.88H7.523a2.323,2.323,0,0,1,.2-1.881Z" transform="translate(0 -283.82)" fill="#cc9a52"/>
+        <path id="Path_2156" data-name="Path 2156" d="M240.085,30.985a1.189,1.189,0,0,0-1.682,0l-.976.976V21.8a1.189,1.189,0,0,0-2.378,0V31.961l-.976-.976a1.189,1.189,0,0,0-1.682,1.682l3.006,3.006a1.189,1.189,0,0,0,1.682,0l3.006-3.006A1.189,1.189,0,0,0,240.085,30.985Z" transform="translate(-223.506 -20.609)" fill="#cc9a52"/>
+      </g>
+    </g>
+  </g>
+</svg>
