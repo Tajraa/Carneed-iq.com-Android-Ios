@@ -306,12 +306,17 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                     Column(
                                       children: [
                                         Text(
-                                          product.priceText,
+                                          product.presalePriceText != null &&
+                                              product.presalePriceText!
+                                                  .substring(0, 4) !=
+                                                  '0.00'
+                                              ? product.presalePriceText!
+                                              : "",
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontSize: SizeConfig.h(12),
                                               fontFamily:
                                                   AppStyle.priceFontFamily(
-                                                product.priceText,
+                                                product.presalePriceText!,
                                               ),
                                               decoration:
                                                   TextDecoration.lineThrough,
@@ -320,12 +325,11 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                               color: AppStyle.redColor),
                                         ),
                                         Text(
-                                          product.presalePriceText ?? '',
+                                          product.priceText,
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontFamily: AppStyle
                                                   .priceFontFamily(product
-                                                          .presalePriceText ??
-                                                      ''),
+                                                          .priceText),
                                               fontSize: SizeConfig.h(22)),
                                         )
                                       ],

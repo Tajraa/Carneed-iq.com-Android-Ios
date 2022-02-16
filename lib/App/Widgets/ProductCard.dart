@@ -15,6 +15,7 @@ import '../../constants.dart';
 class ProductCard extends StatefulWidget {
   final Product product;
   final bool forPointSale;
+
   ProductCard({required this.product, Key? key, this.forPointSale: false})
       : super(key: key);
 
@@ -24,8 +25,10 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   _ProductCardState(this.product);
+
   final Product product;
   bool loadingCart = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -60,8 +63,7 @@ class _ProductCardState extends State<ProductCard> {
                         width: 147,
                         height: 123,
                         child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10),
                             child: Image.network(
                               product.coverImage ?? PlacholderImageUrl,
                               fit: BoxFit.cover,
@@ -83,11 +85,11 @@ class _ProductCardState extends State<ProductCard> {
                                   child: Text(
                                 product.title,
                                 style: TextStyle(
-                                      height: 1.1,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppStyle.secondaryColor,
-                                    ),
+                                  height: 1.1,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppStyle.secondaryColor,
+                                ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ))
@@ -117,7 +119,12 @@ class _ProductCardState extends State<ProductCard> {
                                 ),
                                 Spacer(),
                                 Text(
-                                  product.presalePriceText ?? "",
+                                  product.presalePriceText != null &&
+                                          product.presalePriceText!
+                                                  .substring(0, 4) !=
+                                              '0.00'
+                                      ? product.presalePriceText!
+                                      : "",
                                   style: TextStyle(
                                       height: 1.1,
                                       fontSize: 14,
@@ -137,16 +144,21 @@ class _ProductCardState extends State<ProductCard> {
                                     child: Text(
                                   product.priceText,
                                   style: TextStyle(
-                                        height: 1.1,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: AppStyle.priceFontFamily(
-                                            product.priceText),
-                                        fontSize: 14,
-                                        color: AppStyle.primaryColor),
+                                      height: 1.1,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: AppStyle.priceFontFamily(
+                                          product.priceText),
+                                      fontSize: 14,
+                                      color: AppStyle.primaryColor),
                                   maxLines: 1,
                                 )),
                                 Text(
-                                  product.presalePriceText ?? "",
+                                  product.presalePriceText != null &&
+                                      product.presalePriceText!
+                                          .substring(0, 4) !=
+                                          '0.00'
+                                      ? product.presalePriceText!
+                                      : "",
                                   style: TextStyle(
                                       height: 1.1,
                                       fontSize: 14,
@@ -243,8 +255,8 @@ class _ProductCardState extends State<ProductCard> {
                     onTap: () {
                       if (sl<AuthBloc>().isGuest) {
                         showLoginDialoge(context);
-                      }else
-                      setIsFavorite();
+                      } else
+                        setIsFavorite();
                     },
                     child: Container(
                       decoration: BoxDecoration(boxShadow: [
@@ -273,6 +285,7 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   final debouncer = Debouncer(milliseconds: 1000);
+
   void setIsFavorite() {
     setState(() {
       product.isFavorite = !product.isFavorite;

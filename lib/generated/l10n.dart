@@ -1713,7 +1713,7 @@ class S {
   /// `تفاصيل الطلب`
   String get product_details {
     return Intl.message(
-      'تفاصيل الطلب',
+      'تفاصيل المنتج',
       name: 'product_details',
       desc: '',
       args: [],

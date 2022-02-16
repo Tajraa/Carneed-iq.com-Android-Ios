@@ -244,7 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "point": MessageLookupByLibrary.simpleMessage("نقطة"),
         "price": MessageLookupByLibrary.simpleMessage("السعر"),
         "privcy": MessageLookupByLibrary.simpleMessage("سياسة الخصوصية"),
-        "product_details": MessageLookupByLibrary.simpleMessage("تفاصيل الطلب"),
+        "product_details": MessageLookupByLibrary.simpleMessage("تفاصيل المنتج"),
         "products": MessageLookupByLibrary.simpleMessage("منتجات"),
         "productsList": MessageLookupByLibrary.simpleMessage("قائمة المنتجات"),
         "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
