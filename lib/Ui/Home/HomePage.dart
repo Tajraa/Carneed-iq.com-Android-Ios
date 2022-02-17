@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
 
   Container buildCategoriesSection(SettingsModel settings) {
     return Container(
-      height: 100,
+      height: 110,
       width: double.infinity,
       child: Row(
         children: [
@@ -174,8 +174,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           Container(
             margin: EdgeInsets.symmetric(horizontal: 7),
-            width: 61,
-            height: 61,
+            width: 80,
+            height: 80,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [
@@ -196,7 +196,7 @@ class _HomePageState extends State<HomePage> {
             height: 8,
           ),
           SizedBox(
-            width: 61,
+            width: 70,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                        height: 1.1, fontSize: 12, color: AppStyle.greyDark),
+                        height: 1.1, fontSize: 13, color: AppStyle.greyDark),
                 ))
               ],
             ),

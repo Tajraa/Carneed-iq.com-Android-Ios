@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:progiom_cms/core.dart';
@@ -18,6 +19,7 @@ import '/generated/l10n.dart';
 class CategoryProductsPage extends StatefulWidget {
   final Category category;
   final int selectedId;
+
   CategoryProductsPage(
       {required this.category, required this.selectedId, Key? key})
       : super(key: key);
@@ -175,7 +177,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
     return SliverToBoxAdapter(
       child: SizedBox(
         width: SizeConfig.screenWidth,
-        height: SizeConfig.h(85),
+        height: SizeConfig.h(100),
         child: Row(
           children: [
             // SizedBox(
@@ -199,80 +201,63 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                           });
                           bloc.add(LoadEvent(selectedCategoryId));
                         },
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.h(14)),
-                              height: SizeConfig.h(77),
-                              width: SizeConfig.h(53),
-                              decoration: BoxDecoration(
-                                boxShadow: isSelected
-                                    ? [AppStyle.boxShadow3on6]
-                                    : null,
-                                color: isSelected
-                                    ? AppStyle.primaryColor
-                                    : Colors.white,
-                                border: isSelected
-                                    ? null
-                                    : Border.all(
-                                        color: AppStyle.disabledBorderColor,
-                                      ),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        category.coverImage,
-                                        height: SizeConfig.h(20),
-                                        width: SizeConfig.h(20),
-                                      ),
-                                    ),
-                                    height: SizeConfig.h(37),
-                                    width: SizeConfig.h(37),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        color: isSelected
-                                            ? AppStyle.whiteColor
-                                            : null,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: isSelected
-                                                ? AppStyle.whiteColor
-                                                : AppStyle
-                                                    .disabledBorderColor)),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow:
+                                isSelected ? [AppStyle.boxShadow3on6] : null,
+                            color: isSelected
+                                ? AppStyle.primaryColor
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 7),
+                                width: SizeConfig.h(70),
+                                height: SizeConfig.h(70),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          offset: Offset(0.0, 3.0),
+                                          blurRadius: 6,
+                                          color: Colors.black12)
+                                    ]),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: CachedNetworkImage(
+                                    imageUrl: category.coverImage,
+                                    fit: BoxFit.cover,
                                   ),
-                                  SizedBox(
-                                    width: SizeConfig.h(50),
-                                    height: SizeConfig.h(25),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          category.title,
-                                          textAlign: TextAlign.center,
-                                          maxLines: 1,
-                                          style: AppStyle.vexa12.copyWith(
-                                              color: isSelected
-                                                  ? Colors.white
-                                                  : AppStyle.disabledColor),
-                                        ),
-                                        SizedBox(
-                                          height: SizeConfig.h(6),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 8,
+                              ),
+                              SizedBox(
+                                width: 70,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                        child: Text(
+                                      category.title,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          height: 1.1,
+                                          fontSize: 13,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : AppStyle.greyDark),
+                                    ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       );
                     }))
@@ -293,70 +278,58 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
         });
         bloc.add(LoadEvent(selectedCategoryId));
       },
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: SizeConfig.h(14)),
-            height: SizeConfig.h(77),
-            width: SizeConfig.h(53),
-            decoration: BoxDecoration(
-              boxShadow: isSelected ? [AppStyle.boxShadow3on6] : null,
-              color: isSelected ? AppStyle.primaryColor : Colors.white,
-              borderRadius: BorderRadius.circular(100),
-              border: isSelected
-                  ? null
-                  : Border.all(
-                      color: AppStyle.disabledBorderColor,
-                    ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.network(
-                      widget.category.coverImage,
-                      height: SizeConfig.h(20),
-                      width: SizeConfig.h(20),
-                    ),
-                  ),
-                  height: SizeConfig.h(37),
-                  width: SizeConfig.h(37),
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: isSelected ? AppStyle.whiteColor : null,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                          color: isSelected
-                              ? AppStyle.whiteColor
-                              : AppStyle.disabledBorderColor)),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: isSelected ? [AppStyle.boxShadow3on6] : null,
+          color: isSelected ? AppStyle.primaryColor : Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 7),
+              width: SizeConfig.h(70),
+              height: SizeConfig.h(70),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(0.0, 3.0),
+                        blurRadius: 6,
+                        color: Colors.black12)
+                  ]),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: CachedNetworkImage(
+                  imageUrl: widget.category.coverImage,
+                  fit: BoxFit.cover,
                 ),
-                SizedBox(
-                  width: SizeConfig.h(50),
-                  height: SizeConfig.h(25),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        S.of(context).all,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        style: AppStyle.vexa12.copyWith(
-                            color: isSelected
-                                ? AppStyle.whiteColor
-                                : AppStyle.disabledColor),
-                      ),
-                      SizedBox(
-                        height: SizeConfig.h(6),
-                      )
-                    ],
-                  ),
-                )
-              ],
+              ),
             ),
-          ),
-        ],
+            SizedBox(
+              height: 8,
+            ),
+            SizedBox(
+              width: 70,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Text(
+                    S.of(context).all,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        height: 1.1,
+                        fontSize: 13,
+                        color: isSelected ? Colors.white : AppStyle.greyDark),
+                  ))
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

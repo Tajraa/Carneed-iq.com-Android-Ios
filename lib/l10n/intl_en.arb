@@ -121,7 +121,7 @@
   "not_loggedin_content": "Please login to continue.",
   "back": "Back",
   "all": "All",
-  "cart_empty_subtitle": "Why don't you go and fill it with cool cosmetics?",
+  "cart_empty_subtitle": "Products added to the cart will be shown here.",
   "orderPrice": "Cart price:",
   "dateOfOrder": "DateOfOrder: ",
   "editProfile": "Edit Profile",

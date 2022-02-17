@@ -16,13 +16,17 @@ import '/Utils/HeroDialoge.dart';
 import '/Utils/SizeConfig.dart';
 import '/Utils/Style.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' show parse;
 import '/generated/l10n.dart';
 import '../../injections.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductsDetailsPage extends StatefulWidget {
   final String id;
   final bool goToOptions;
   final bool forPointSale;
+
   ProductsDetailsPage(
       {required this.id,
       Key? key,
@@ -36,6 +40,7 @@ class ProductsDetailsPage extends StatefulWidget {
 
 class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   final ProductdetailsBloc bloc = ProductdetailsBloc();
+
   @override
   void initState() {
     bloc.add(GetDetails(widget.id));
@@ -52,6 +57,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   bool showSelectOptions = false;
   Map<String, String> selectedOptions = {};
   int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     var topPadding = MediaQuery.of(context).padding.top;
@@ -167,22 +173,41 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                 SizedBox(
                                   height: SizeConfig.h(7),
                                 ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Html(
-                                        data: product.description ?? "",
-                                        style: {
-                                          "*": Style.fromTextStyle(
-                                                  AppStyle.vexaLight12)
-                                              .copyWith(
-                                                  backgroundColor:
-                                                      Colors.transparent)
-                                        },
-                                      ),
-                                    ),
-                                  ],
+                                SelectableLinkify(
+                                  text: _parseHtmlString(
+                                      product.description ?? ""),
+                                  onOpen: (link) async {
+                                    if (await canLaunch(link.url)) {
+                                      launch(link.url);
+                                    } else {}
+                                  },
+                                  linkStyle: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppStyle.secondaryColor,
+                                    decoration: TextDecoration.underline,
+                                    fontSize: SizeConfig.h(12),
+                                  ),
+                                  style: AppStyle.vexaLight12.copyWith(
+                                    backgroundColor: Colors.transparent,
+                                    // whiteSpace: WhiteSpace.PRE,
+                                    // lineHeight: LineHeight(1.5),
+                                    height: 1.5,
+                                    color: Color(0xFF444444),
+                                  ),
                                 ),
+                                // SelectableHtml(
+                                //   data: product.description ?? "",
+                                //   style: {
+                                //     "*": Style.fromTextStyle(
+                                //         AppStyle.vexaLight12)
+                                //         .copyWith(
+                                //         backgroundColor: Colors.transparent,
+                                //         whiteSpace: WhiteSpace.PRE,
+                                //         lineHeight: LineHeight(1.5),
+                                //         color: Color(0xFF444444),
+                                //     )
+                                //   },
+                                // ),
                                 if (product.optionsData != null &&
                                     product.optionsData!.isNotEmpty)
                                   Column(
@@ -307,9 +332,9 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                       children: [
                                         Text(
                                           product.presalePriceText != null &&
-                                              product.presalePriceText!
-                                                  .substring(0, 4) !=
-                                                  '0.00'
+                                                  product.presalePriceText!
+                                                          .substring(0, 4) !=
+                                                      '0.00'
                                               ? product.presalePriceText!
                                               : "",
                                           style: AppStyle.yaroCut14.copyWith(
@@ -327,9 +352,9 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                         Text(
                                           product.priceText,
                                           style: AppStyle.yaroCut14.copyWith(
-                                              fontFamily: AppStyle
-                                                  .priceFontFamily(product
-                                                          .priceText),
+                                              fontFamily:
+                                                  AppStyle.priceFontFamily(
+                                                      product.priceText),
                                               fontSize: SizeConfig.h(22)),
                                         )
                                       ],
@@ -388,6 +413,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   bool loadingCart = false;
   int count = 1;
   final Debouncer debouncer = Debouncer();
+
   void addToCart() async {
     setState(() {
       loadingCart = true;
@@ -666,5 +692,12 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
         ],
       ),
     );
+  }
+
+  String _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString =
+        parse(document.body?.text).documentElement?.text ?? "";
+    return parsedString.replaceAll('\n', '\n\n');
   }
 }

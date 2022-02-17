@@ -64,7 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cart": MessageLookupByLibrary.simpleMessage("السلة"),
         "cartEmpty": MessageLookupByLibrary.simpleMessage("السلة فارغة!"),
         "cart_empty_subtitle": MessageLookupByLibrary.simpleMessage(
-            "لماذا لا تذهبين وتملئينه بأدوات التجميل الرائعة؟ "),
+            "عند إضافة منتجات إلى السلة ستظهر هنا."),
         "cart_tour": MessageLookupByLibrary.simpleMessage(
             "هنا تجد المنتجات التي تمت إضافتها للسلة لمتابعة عملية الشراء."),
         "categories": MessageLookupByLibrary.simpleMessage("التصنيفات"),

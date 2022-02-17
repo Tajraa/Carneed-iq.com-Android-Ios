@@ -66,7 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cart": MessageLookupByLibrary.simpleMessage("Cart"),
         "cartEmpty": MessageLookupByLibrary.simpleMessage("The cart is empty!"),
         "cart_empty_subtitle": MessageLookupByLibrary.simpleMessage(
-            "Why don\'t you go and fill it with cool cosmetics?"),
+            "Products added to the cart will be shown here."),
         "cart_tour": MessageLookupByLibrary.simpleMessage(
             "Here you will find the products that have been added to the cart to continue the purchase process."),
         "categories": MessageLookupByLibrary.simpleMessage("Categories"),
