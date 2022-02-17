@@ -1710,7 +1710,7 @@ class S {
     );
   }
 
-  /// `تفاصيل الطلب`
+  /// `تفاصيل المنتج`
   String get product_details {
     return Intl.message(
       'تفاصيل المنتج',
@@ -2073,7 +2073,7 @@ class S {
   /// `نقاط كارنيد `
   String get carneed_points {
     return Intl.message(
-      'نقاط كارنيد',
+      'نقاط كارنيد ',
       name: 'carneed_points',
       desc: '',
       args: [],

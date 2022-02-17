@@ -63,6 +63,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "canceled": MessageLookupByLibrary.simpleMessage("iptal edildi"),
         "cardName": MessageLookupByLibrary.simpleMessage("kartın adı"),
         "cardNumber": MessageLookupByLibrary.simpleMessage("kart numarası"),
+        "carneed_points":
+            MessageLookupByLibrary.simpleMessage("carneed puanları "),
+        "carneed_points_desc": MessageLookupByLibrary.simpleMessage(
+            "Alışverişlerinizin maliyetini düşürmek için kullanılır, ürünlerle değiştirebilirsiniz."),
         "cart": MessageLookupByLibrary.simpleMessage("araba"),
         "cartEmpty": MessageLookupByLibrary.simpleMessage("Sepet boş!"),
         "cart_empty_subtitle": MessageLookupByLibrary.simpleMessage(
@@ -298,10 +302,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "startNow": MessageLookupByLibrary.simpleMessage("Şimdi başla"),
         "submit": MessageLookupByLibrary.simpleMessage("uygula"),
         "success": MessageLookupByLibrary.simpleMessage("başarı"),
-        "carneed_points":
-            MessageLookupByLibrary.simpleMessage("carneed puanları "),
-        "carneed_points_desc": MessageLookupByLibrary.simpleMessage(
-            "Alışverişlerinizin maliyetini düşürmek için kullanılır, ürünlerle değiştirebilirsiniz."),
         "technicalSupport":
             MessageLookupByLibrary.simpleMessage("Teknik Destek"),
         "thanksForTime": MessageLookupByLibrary.simpleMessage(

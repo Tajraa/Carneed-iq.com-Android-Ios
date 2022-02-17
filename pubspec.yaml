@@ -48,12 +48,11 @@ dependencies:
   firebase_messaging: ^11.2.3
   sign_in_with_apple: ^3.2.0
   vibration: ^1.7.4-nullsafety.0
-  # rate_my_app: ^1.1.1+1
   tutorial_coach_mark: ^1.1.1
   flutter_localizations:
     sdk: flutter
   progiom_cms:
-      path: ../Progiom.com-CMS-Android-Ios
+      path: ../progiom_cms
       # git:
       #   url: git@github.com:Progiom/Progiom.com-CMS-Android-Ios.git
       #   tag: 1.0.0

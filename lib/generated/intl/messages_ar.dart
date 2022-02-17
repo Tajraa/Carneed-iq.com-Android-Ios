@@ -61,6 +61,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "canceled": MessageLookupByLibrary.simpleMessage("ملغي"),
         "cardName": MessageLookupByLibrary.simpleMessage("اسم البطاقة"),
         "cardNumber": MessageLookupByLibrary.simpleMessage("رقم البطاقة"),
+        "carneed_points": MessageLookupByLibrary.simpleMessage("نقاط كارنيد "),
+        "carneed_points_desc": MessageLookupByLibrary.simpleMessage(
+            "تستخدم في تخفيض التكلفة على مشترياتك, حيث يمكنك استبدالهم بمنتجات معينة."),
         "cart": MessageLookupByLibrary.simpleMessage("السلة"),
         "cartEmpty": MessageLookupByLibrary.simpleMessage("السلة فارغة!"),
         "cart_empty_subtitle": MessageLookupByLibrary.simpleMessage(
@@ -244,7 +247,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "point": MessageLookupByLibrary.simpleMessage("نقطة"),
         "price": MessageLookupByLibrary.simpleMessage("السعر"),
         "privcy": MessageLookupByLibrary.simpleMessage("سياسة الخصوصية"),
-        "product_details": MessageLookupByLibrary.simpleMessage("تفاصيل المنتج"),
+        "product_details":
+            MessageLookupByLibrary.simpleMessage("تفاصيل المنتج"),
         "products": MessageLookupByLibrary.simpleMessage("منتجات"),
         "productsList": MessageLookupByLibrary.simpleMessage("قائمة المنتجات"),
         "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
@@ -292,9 +296,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "startNow": MessageLookupByLibrary.simpleMessage("ابدأ الأن"),
         "submit": MessageLookupByLibrary.simpleMessage("تطبيق"),
         "success": MessageLookupByLibrary.simpleMessage("نجاح"),
-        "carneed_points": MessageLookupByLibrary.simpleMessage("نقاط كارنيد"),
-        "carneed_points_desc": MessageLookupByLibrary.simpleMessage(
-            "تستخدم في تخفيض التكلفة على مشترياتك, حيث يمكنك استبدالهم بمنتجات معينة."),
         "technicalSupport": MessageLookupByLibrary.simpleMessage("الدعم الفني"),
         "thanksForTime": MessageLookupByLibrary.simpleMessage(
             "نشكرك على الوقت الذي أمضيته في إنشاء حسابك. الآن هذا هو الجزء الممتع ، دعنا نستكشف التطبيق."),

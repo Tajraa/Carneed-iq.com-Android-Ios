@@ -63,6 +63,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "cardName":
             MessageLookupByLibrary.simpleMessage("The name of the card"),
         "cardNumber": MessageLookupByLibrary.simpleMessage("Card number"),
+        "carneed_points":
+            MessageLookupByLibrary.simpleMessage("carneed points "),
+        "carneed_points_desc": MessageLookupByLibrary.simpleMessage(
+            "Used to reduce the cost of your purchases, you can exchange it with products."),
         "cart": MessageLookupByLibrary.simpleMessage("Cart"),
         "cartEmpty": MessageLookupByLibrary.simpleMessage("The cart is empty!"),
         "cart_empty_subtitle": MessageLookupByLibrary.simpleMessage(
@@ -296,9 +300,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "startNow": MessageLookupByLibrary.simpleMessage("Start now"),
         "submit": MessageLookupByLibrary.simpleMessage("Apply"),
         "success": MessageLookupByLibrary.simpleMessage("success"),
-        "carneed_points": MessageLookupByLibrary.simpleMessage("carneed points "),
-        "carneed_points_desc": MessageLookupByLibrary.simpleMessage(
-            "Used to reduce the cost of your purchases, you can exchange it with products."),
         "technicalSupport":
             MessageLookupByLibrary.simpleMessage("Technical Support"),
         "thanksForTime": MessageLookupByLibrary.simpleMessage(
