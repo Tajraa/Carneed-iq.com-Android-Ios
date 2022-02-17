@@ -12,32 +12,6 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundleURLTypes</key>
-<array>
-  <dict>
-    <key>CFBundleTypeRole</key>
-    <string>Editor</string>
-    <key>CFBundleURLSchemes</key>
-    <array>
-      <string>fb256156606517540</string>
-      <string>com.googleusercontent.apps.1085980844697-1dlfjoqolarelijafkvuvc3j1itis08o</string>
-    </array>
-  </dict>
-</array>
-
-<key>FacebookAppID</key>
-<string>256156606517540</string>
-<key>FacebookDisplayName</key>
-<string>Carneed</string>
-<key>LSApplicationQueriesSchemes</key>
-<array>
-  <string>fbapi</string>
-  <string>fb-messenger-share-api</string>
-  <string>fbauth2</string>
-  <string>fbshareextension</string><string>https</string>
-
-</array>
-
 	<key>CFBundleName</key>
 	<string>Carneed</string>
 	<key>CFBundlePackageType</key>
@@ -46,8 +20,24 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb429404528873756</string>
+				<string>com.googleusercontent.apps.275975164239-2smjfgd6qapi36ra9laqfrlnrll0nc8c</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>429404528873756</string>
+	<key>FacebookDisplayName</key>
+	<string>Carneed</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>itms-beta</string>
@@ -73,7 +63,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-	
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
