@@ -74,6 +74,7 @@ class _HomePageState extends State<HomePage> {
                       buildSectionLabel(S.of(context).categories, () {},
                           hasSeeAll: false),
                       buildCategoriesSection(settings),
+                      SizedBox(height: 20),
                       ...[
                         for (CategoryFeatured section
                             in settings.categoriesFeatured ?? [])
@@ -203,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                     child: Text(
                   category.title,
-                  overflow: TextOverflow.ellipsis,
+                  // overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -244,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                     height: 1.1, fontSize: 12, color: AppStyle.greyColor),
               ),
-            )
+            ),
         ],
       ),
     );

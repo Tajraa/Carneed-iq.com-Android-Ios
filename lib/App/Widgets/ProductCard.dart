@@ -45,7 +45,7 @@ class _ProductCardState extends State<ProductCard> {
             padding: EdgeInsets.all(5),
             margin: EdgeInsets.symmetric(horizontal: 6.5),
             width: 157,
-            height: 239,
+            // height: 239,
             decoration: BoxDecoration(
                 color: AppStyle.whiteColor,
                 borderRadius: BorderRadius.circular(10),
@@ -154,9 +154,9 @@ class _ProductCardState extends State<ProductCard> {
                                 )),
                                 Text(
                                   product.presalePriceText != null &&
-                                      product.presalePriceText!
-                                          .substring(0, 4) !=
-                                          '0.00'
+                                          product.presalePriceText!
+                                                  .substring(0, 4) !=
+                                              '0.00'
                                       ? product.presalePriceText!
                                       : "",
                                   style: TextStyle(
@@ -172,8 +172,11 @@ class _ProductCardState extends State<ProductCard> {
                               ],
                             ),
                           Spacer(),
+                          Container(
+                            height: 5,
+                          ),
                           MainButton(
-                              height: 30,
+                              height: 28,
                               onTap: loadingCart
                                   ? () {} // not null so incoming taps will not open productDetails
                                   : () {

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:progiom_cms/core.dart';
 import 'package:progiom_cms/ecommerce.dart';
+import 'package:progiom_cms/homeSettings.dart';
 import '/App/Widgets/AppErrorWidget.dart';
 import '/App/Widgets/AppLoader.dart';
 import '/App/Widgets/CustomAppBar.dart';
@@ -40,9 +41,23 @@ class ProductsDetailsPage extends StatefulWidget {
 
 class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   final ProductdetailsBloc bloc = ProductdetailsBloc();
+  Map? preferences;
+
+  getPreferences() async {
+    final result = await GetPreferences(sl()).call(NoParams());
+    result.fold((l) {
+      AppSnackBar.show(context, l.errorMessage, ToastType.Error);
+    }, (r) {
+      if (mounted)
+        setState(() {
+          preferences = r;
+        });
+    });
+  }
 
   @override
   void initState() {
+    getPreferences();
     bloc.add(GetDetails(widget.id));
     super.initState();
   }
@@ -192,7 +207,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                     // whiteSpace: WhiteSpace.PRE,
                                     // lineHeight: LineHeight(1.5),
                                     height: 1.5,
-                                    color: Color(0xFF444444),
+                                    color: Color(0xFF333333),
                                   ),
                                 ),
                                 // SelectableHtml(
@@ -341,7 +356,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                               fontSize: SizeConfig.h(12),
                                               fontFamily:
                                                   AppStyle.priceFontFamily(
-                                                product.presalePriceText!,
+                                                product.presalePriceText ?? '',
                                               ),
                                               decoration:
                                                   TextDecoration.lineThrough,
@@ -584,7 +599,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
 
   Container buildProductsSection(List<Product> relatedProducts) {
     return Container(
-      height: SizeConfig.h(260),
+      height: SizeConfig.h(280),
       width: double.infinity,
       child: Row(
         children: [
@@ -681,6 +696,21 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
             ],
           ),
           Spacer(),
+          if (preferences != null)
+            GestureDetector(
+              onTap: () {
+                if (preferences != null)
+                  openWhatsapp(preferences!["support_phone"]);
+              },
+              child: Icon(
+                Icons.whatsapp,
+                color: AppStyle.primaryColor,
+                size: SizeConfig.w(20),
+              ),
+            ),
+          SizedBox(
+            width: SizeConfig.h(24),
+          ),
           if (id != null)
             FavoriteButton(
               isFavorite: isFavorite,
@@ -688,7 +718,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
             ),
           SizedBox(
             width: SizeConfig.h(24),
-          )
+          ),
         ],
       ),
     );

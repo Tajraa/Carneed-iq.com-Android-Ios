@@ -205,7 +205,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "سيتم إظهار الإشعارات الخاصة بك بمجرد حصول أي حدث جديد."),
         "no_result": MessageLookupByLibrary.simpleMessage("لا يوجد نتائج"),
         "no_result_subtitle": MessageLookupByLibrary.simpleMessage(
-            "سيتم إظهار المنتجات هنا عند توفرها مباشرةً."),
+            "سيتم إظهار الطلبات الحالية والسابقة عند توفرها مباشرة."),
         "no_search_subtitle": MessageLookupByLibrary.simpleMessage(
             "يمكنك تجربة البحث بكلمات مختلفة عن المنتجات التي تبحث عنها."),
         "not_loggedin_content": MessageLookupByLibrary.simpleMessage(

@@ -2,7 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:progiom_cms/core.dart';
+import 'package:progiom_cms/homeSettings.dart';
 
+import '../../Utils/AppSnackBar.dart';
+import '../../injections.dart';
 import '/App/Widgets/AppErrorWidget.dart';
 import '/App/Widgets/AppLoader.dart';
 import '/App/Widgets/CustomAppBar.dart';
@@ -31,9 +34,23 @@ class CategoryProductsPage extends StatefulWidget {
 class _CategoryProductsPageState extends State<CategoryProductsPage> {
   late GetProducatsByCategoryParams selectedCategoryId;
   late final CategoryBloc bloc;
+  Map? preferences;
+
+  getPreferences() async {
+    final result = await GetPreferences(sl()).call(NoParams());
+    result.fold((l) {
+      AppSnackBar.show(context, l.errorMessage, ToastType.Error);
+    }, (r) {
+      if (mounted)
+        setState(() {
+          preferences = r;
+        });
+    });
+  }
 
   @override
   void initState() {
+    getPreferences();
     selectedCategoryId =
         GetProducatsByCategoryParams(categoryId: widget.selectedId.toString());
     bloc = CategoryBloc(selectedCategoryId);
@@ -61,6 +78,11 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
               ),
             ),
             buildSubCategories(),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: SizeConfig.h(30),
+              ),
+            ),
             BlocBuilder(
               bloc: bloc,
               builder: (context, state) {
@@ -91,7 +113,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                         maxCrossAxisExtent: SizeConfig.h(230),
                         crossAxisSpacing:
                             0, //cuase the card already taken margin
-                        mainAxisExtent: 239,
+                        mainAxisExtent: 250,
                         mainAxisSpacing: SizeConfig.h(13)),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return ProductCard(product: state.items[index]);
@@ -147,23 +169,18 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
               ],
             ),
             Spacer(),
-            // GestureDetector(
-            //   onTap: () {
-            //     showModalBottomSheet(
-            //         backgroundColor: Colors.transparent,
-            //         shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(SizeConfig.h(20))),
-            //         context: context,
-            //         builder: (BuildContext context) {
-            //           return SortByWidget();
-            //         });
-            //   },
-            //   child: SvgPicture.asset(
-            //     "assets/sort-down.svg",
-            //     height: SizeConfig.h(16),
-            //     width: SizeConfig.h(16),
-            //   ),
-            // ),
+            if (preferences != null)
+              GestureDetector(
+                onTap: () {
+                  if (preferences != null)
+                    openWhatsapp(preferences!["support_phone"]);
+                },
+                child: Icon(
+                  Icons.whatsapp,
+                  color: AppStyle.primaryColor,
+                  size: SizeConfig.w(20),
+                ),
+              ),
             SizedBox(
               width: SizeConfig.h(24),
             )

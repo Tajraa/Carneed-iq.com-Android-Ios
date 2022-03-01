@@ -24,7 +24,7 @@ class _ProductsShimmerGridState extends State<ProductsShimmerGrid> {
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: SizeConfig.h(230),
                 crossAxisSpacing: 0, //cuase the card already taken margin
-                mainAxisExtent: SizeConfig.h(240),
+                mainAxisExtent: SizeConfig.h(255),
                 mainAxisSpacing: SizeConfig.h(13)),
             delegate: SliverChildBuilderDelegate((context, index) {
               return ProductShimmerCard();

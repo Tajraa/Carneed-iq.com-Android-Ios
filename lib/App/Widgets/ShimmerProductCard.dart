@@ -20,7 +20,7 @@ class _ProductShimmerCardState extends State<ProductShimmerCard> {
           padding: EdgeInsets.all(5),
           margin: EdgeInsets.symmetric(horizontal: SizeConfig.h(6.5)),
           width: SizeConfig.h(157),
-          height: SizeConfig.h(239),
+          // height: SizeConfig.h(239),
           decoration: BoxDecoration(
               color: AppStyle.whiteColor,
               borderRadius: BorderRadius.circular(SizeConfig.h(10)),
