@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import '/App/Widgets/AppLoader.dart';
 import '/Utils/AppSnackBar.dart';
 import '/App/Widgets/MainButton.dart';
@@ -26,12 +29,24 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   late final TextEditingController nameController;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController phoneController = TextEditingController();
+  late PhoneNumber phoneNumber;
 
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController(
         text: sl<HomesettingsBloc>().settings?.user?.name ?? "");
+    final countryCode = CountryPickerUtils.getCountryByPhoneCode(
+        sl<HomesettingsBloc>().settings?.user?.countryCode?.substring(1) ??
+            '')
+        .isoCode;
+    // print('cc is ${cc.numeric}');
+    phoneNumber = PhoneNumber(
+        countryISOCode: countryCode,
+        countryCode: sl<HomesettingsBloc>().settings?.user?.countryCode ?? '',
+        number: sl<HomesettingsBloc>().settings?.user?.mobile ?? '');
+    phoneController.text = sl<HomesettingsBloc>().settings?.user?.mobile ?? '';
   }
 
   @override
@@ -64,14 +79,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ? FileImage(File(profilePhotoHandlerPath))
                           : null,
                       backgroundImage:
-                          (sl<HomesettingsBloc>().settings?.user?.coverImage !=
-                                  null)
-                              ? NetworkImage((sl<HomesettingsBloc>()
-                                      .settings
-                                      ?.user
-                                      ?.coverImage) ??
-                                  "")
-                              : null,
+                      (sl<HomesettingsBloc>().settings?.user?.coverImage !=
+                          null)
+                          ? NetworkImage((sl<HomesettingsBloc>()
+                          .settings
+                          ?.user
+                          ?.coverImage) ??
+                          "")
+                          : null,
                     ),
                     Positioned(
                       bottom: SizeConfig.h(25),
@@ -110,23 +125,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   children: [
                     Expanded(
                         child: SizedBox(
-                      height: SizeConfig.h(60),
-                      child: TextFormField(
-                        validator: (v) {
-                          if (v != null) {
-                            if (v.isEmpty) {
-                              return S.of(context).nameRequired;
-                            }
-                          }
-                          return null;
-                        },
-                        controller: nameController,
-                        style: AppStyle.vexa14.copyWith(color: Colors.black),
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16))),
-                      ),
-                    ))
+                          height: SizeConfig.h(60),
+                          child: TextFormField(
+                            validator: (v) {
+                              if (v != null) {
+                                if (v.isEmpty) {
+                                  return S.of(context).nameRequired;
+                                }
+                              }
+                              return null;
+                            },
+                            controller: nameController,
+                            style: AppStyle.vexa14.copyWith(color: Colors.black),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16))),
+                          ),
+                        ))
                   ],
                 ),
                 SizedBox(
@@ -143,21 +158,92 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 SizedBox(
                   height: SizeConfig.h(10),
                 ),
+                Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: IntlPhoneField(
+                    initialCountryCode: phoneNumber.countryISOCode,
+                    searchText: S.of(context).searchHere,
+                    dropdownTextStyle: TextStyle(fontSize: SizeConfig.w(12)),
+                    style: TextStyle(fontSize: SizeConfig.w(12)),
+                    showCountryFlag:
+                    phoneNumber.countryCode == '+963' ? false : true,
+                    onCountryChanged: (c) {
+                      setState(() {
+                        phoneNumber.countryCode = '+' + c.dialCode;
+                      });
+                    },
+                    onChanged: (PhoneNumber phoneNumber) {
+                      setState(() {
+                        phoneNumber.countryCode = phoneNumber.countryCode;
+                        phoneNumber.number = '0' + phoneNumber.number;
+                      });
+                    },
+                    controller: phoneController,
+                    invalidNumberMessage: S.of(context).mobileValidator,
+                    decoration: InputDecoration(
+                        hintTextDirection: TextDirection.rtl,
+                        alignLabelWithHint: true,
+                        suffixIcon: Icon(Icons.phone_android),
+                        labelText: S.of(context).phone_number,
+                        contentPadding: EdgeInsets.symmetric(
+                          // vertical: SizeConfig.h(2),
+                          horizontal: SizeConfig.w(10),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1,
+                              style: BorderStyle.solid,
+                              color: AppStyle.primaryColor),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(16),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1,
+                              style: BorderStyle.solid,
+                              color: AppStyle.disabledColor),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(16),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1,
+                              style: BorderStyle.solid,
+                              color: AppStyle.primaryColor),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(16),
+                          ),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        labelStyle: TextStyle(
+                          fontSize: SizeConfig.h(14),
+                        ),
+                        errorStyle: TextStyle(fontSize: SizeConfig.h(14)),
+                        fillColor: Colors.white70),
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.h(10),
+                ),
                 Row(
                   children: [
                     Expanded(
                         child: SizedBox(
-                      height: SizeConfig.h(60),
-                      child: TextFormField(
-                        readOnly: true,
-                        initialValue:
+                          height: SizeConfig.h(60),
+                          child: TextFormField(
+                            readOnly: true,
+                            initialValue:
                             sl<HomesettingsBloc>().settings?.user?.email ?? "",
-                        style: AppStyle.vexa14.copyWith(color: Colors.black),
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16))),
-                      ),
-                    ))
+                            style: AppStyle.vexa14.copyWith(color: Colors.black),
+                            decoration: InputDecoration(
+                                filled: true,
+                                fillColor: AppStyle.disabledColor,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16))),
+                          ),
+                        ))
                   ],
                 ),
                 SizedBox(
@@ -206,6 +292,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   bool isLoading = false;
   var profilePhotoHandlerPath;
+
   pickImage() async {
     final ImagePicker _picker = ImagePicker();
 
@@ -223,6 +310,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     });
     var data = {
       "name": nameController.text,
+      "country_code": phoneNumber.countryCode,
+      "mobile": phoneNumber.number,
     };
     if (profilePhotoHandlerPath != null) {
       var url = await sl<Repository>().uploadFile(

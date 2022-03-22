@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:progiom_cms/auth.dart';
 import 'package:progiom_cms/core.dart';
 import './/Utils/AppSnackBar.dart';
@@ -30,8 +32,13 @@ class _LoginPageState extends State<LoginPage>
   bool isSignUp = false;
   late TabController _controller;
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  String? countryCode = '';
+  String? mobile = '';
+
   @override
   void initState() {
     _controller = TabController(length: 2, vsync: this);
@@ -54,6 +61,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   TapGestureRecognizer? tapGestureRecognizer;
+
   void _goToRegister() {
     _controller.animateTo(1);
     setState(() {
@@ -72,6 +80,7 @@ class _LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: AppStyle.secondaryColor, elevation: 0.0),
       body: DefaultTabController(
         length: 2,
         child: Form(
@@ -97,13 +106,10 @@ class _LoginPageState extends State<LoginPage>
                 padding: EdgeInsets.symmetric(horizontal: SizeConfig.h(24)),
                 child: SingleChildScrollView(
                   child: SizedBox(
-                    height:
-                        SizeConfig.screenHeight + ((Platform.isIOS) ? 45 : 0),
+                    height: (SizeConfig.screenHeight - SizeConfig.h(40)) +
+                        ((Platform.isIOS) ? 90 : 0),
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: SizeConfig.screenHeight * 0.1,
-                        ),
                         Row(
                           children: [
                             Expanded(
@@ -133,59 +139,62 @@ class _LoginPageState extends State<LoginPage>
                           child: Stack(
                             children: [
                               AnimatedContainer(
-                                duration: const Duration(milliseconds: 250),
-                                padding: EdgeInsets.all(SizeConfig.h(28)),
-                                height: SizeConfig.h(isSignUp ? 400 : 382),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black12,
-                                          offset: Offset(0.0, 3.0),
-                                          blurRadius: 20)
-                                    ],
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Scaffold(
-                                    backgroundColor: Colors.white,
-                                    appBar: AppBar(
-                                      automaticallyImplyLeading: false,
-                                      backgroundColor: Colors.white,
-                                      elevation: 0.0,
-                                      flexibleSpace: TabBar(
+                                  duration: const Duration(milliseconds: 250),
+                                  padding: EdgeInsets.all(SizeConfig.h(28)),
+                                  height: SizeConfig.h(isSignUp ? 400 : 382),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.black12,
+                                            offset: Offset(0.0, 3.0),
+                                            blurRadius: 20)
+                                      ],
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    children: [
+                                      TabBar(
                                         controller: _controller,
                                         isScrollable: true,
                                         indicatorColor: Colors.orange,
+                                        labelColor: AppStyle.secondaryColor,
+                                        unselectedLabelColor:
+                                        AppStyle.disabledColor,
                                         indicatorSize:
-                                            TabBarIndicatorSize.label,
+                                        TabBarIndicatorSize.label,
+                                        labelStyle: AppStyle.vexa14
+                                            .copyWith(fontFamily: "Almaria"),
+                                        unselectedLabelStyle: AppStyle.vexa14
+                                            .copyWith(fontFamily: "Almaria"),
                                         tabs: [
                                           Tab(
-                                              child: Text(
-                                            S.of(context).login,
-                                            style: AppStyle.vexa14.copyWith(
-                                                color: isSignUp
-                                                    ? AppStyle.disabledColor
-                                                    : AppStyle.secondaryColor),
-                                          )),
+                                            text: "   " +
+                                                S.of(context).login +
+                                                "   ",
+                                          ),
                                           Tab(
-                                              child: Text(
-                                            S.of(context).create_account,
-                                            style: AppStyle.vexa14.copyWith(
-                                                color: !isSignUp
-                                                    ? AppStyle.disabledColor
-                                                    : AppStyle.secondaryColor),
-                                          )),
+                                            text: "   " +
+                                                S.of(context).create_account +
+                                                "   ",
+                                          )
                                         ],
                                       ),
-                                    ),
-                                    body: TabBarView(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      controller: _controller,
-                                      children: [
-                                        buildLoginDialoge(),
-                                        buildSignUpDialoge(),
-                                      ],
-                                    )),
-                              ),
+                                      SizedBox(
+                                        height: SizeConfig.h(25),
+                                      ),
+                                      Expanded(
+                                        child: TabBarView(
+                                          physics:
+                                          NeverScrollableScrollPhysics(),
+                                          controller: _controller,
+                                          children: [
+                                            buildLoginDialoge(),
+                                            buildSignUpDialoge(),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )),
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: GestureDetector(
@@ -197,7 +206,9 @@ class _LoginPageState extends State<LoginPage>
                                         sl<AuthBloc>().add(SignUpEvent({
                                           "name": nameController.text,
                                           "email": emailController.text,
-                                          "password": passwordController.text
+                                          "country_code": countryCode,
+                                          "mobile": mobile,
+                                          "password": passwordController.text,
                                         }));
                                       } else {
                                         sl<AuthBloc>().add(LoginEvent(
@@ -292,30 +303,40 @@ class _LoginPageState extends State<LoginPage>
                         ),
                         buildSocialLogin(context),
                         Spacer(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RichText(
-                                text: TextSpan(
-                                    text: S.of(context).dont_have_account,
-                                    style: TextStyle(
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            _goToRegister();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.7),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RichText(
+                                    text: TextSpan(
+                                        text: S.of(context).dont_have_account,
+                                        style: TextStyle(
                                             color: AppStyle.secondaryColor,
                                             fontSize: SizeConfig.h(12))
-                                        .copyWith(fontFamily: "Almaria"),
-                                    children: [
-                                  TextSpan(
-                                      text: " " + S.of(context).singup + " ",
-                                      style: TextStyle(
-                                              color: AppStyle.primaryColor,
-                                              fontWeight: FontWeight.bold)
-                                          .copyWith(fontFamily: "Almaria"),
-                                      recognizer: tapGestureRecognizer),
-                                ]))
-                          ],
+                                            .copyWith(fontFamily: "Almaria"),
+                                        children: [
+                                          TextSpan(
+                                              text:
+                                              " " + S.of(context).singup + " ",
+                                              style: TextStyle(
+                                                  color: AppStyle.primaryColor,
+                                                  fontWeight: FontWeight.bold)
+                                                  .copyWith(fontFamily: "Almaria"),
+                                              recognizer: tapGestureRecognizer),
+                                        ])),
+                              ],
+                            ),
+                          ),
                         ),
                         SizedBox(
-                          height: SizeConfig.h(5),
-                        ),
+                          height: 15,
+                        )
                       ],
                     ),
                   ),
@@ -335,22 +356,22 @@ class _LoginPageState extends State<LoginPage>
           children: [
             Expanded(
                 child: Container(
-              height: 1,
-              color: AppStyle.secondaryColor,
-            )),
+                  height: 1,
+                  color: AppStyle.secondaryColor,
+                )),
             Expanded(
                 flex: 2,
                 child: Center(
                     child: Text(
-                  S.of(context).sign_in_with,
-                  style:
+                      S.of(context).sign_in_with,
+                      style:
                       AppStyle.vexa12.copyWith(color: AppStyle.secondaryColor),
-                ))),
+                    ))),
             Expanded(
                 child: Container(
-              height: 1,
-              color: AppStyle.secondaryColor,
-            )),
+                  height: 1,
+                  color: AppStyle.secondaryColor,
+                )),
           ],
         ),
         SizedBox(
@@ -465,11 +486,18 @@ class _LoginPageState extends State<LoginPage>
           height: SizeConfig.h(4),
         ),
         buildTextField(
-            S.of(context).e_mail, Icons.person_outline, emailController,
-            validator: (v) {
+            S.of(context).e_mail + ' / ' + S.of(context).phone_number,
+            Icons.person_outline,
+            emailController, validator: (v) {
           if (v != null) {
-            if (!validEmail(v)) {
-              return S.of(context).emailValidator;
+            if (v.contains(new RegExp(r'[A-Za-z]'))) {
+              if (!validEmail(v)) {
+                return S.of(context).emailValidator;
+              }
+            } else {
+              if (!validPhoneNumber(v)) {
+                return S.of(context).mobileValidator;
+              }
             }
           }
           return null;
@@ -480,10 +508,10 @@ class _LoginPageState extends State<LoginPage>
         buildTextField(
             S.of(context).password, Icons.lock_outline, passwordController,
             validator: (v) {
-          if (v != null && !validPassword(v))
-            return S.of(context).passwordValidator;
-          return null;
-        }, obscureText: true),
+              if (v != null && !validPassword(v))
+                return S.of(context).passwordValidator;
+              return null;
+            }, obscureText: true),
         SizedBox(
           height: SizeConfig.h(15),
         ),
@@ -517,32 +545,109 @@ class _LoginPageState extends State<LoginPage>
           buildTextField(
               S.of(context).fullName, Icons.person_outline, nameController,
               validator: (v) {
-            if (v != null && v.isEmpty) return S.of(context).nameRequired;
-            return null;
-          }),
+                if (v != null && v.isEmpty) return S.of(context).nameRequired;
+                return null;
+              }),
           SizedBox(
             height: SizeConfig.h(15),
           ),
           buildTextField(
               S.of(context).e_mail, Icons.email_outlined, emailController,
               validator: (v) {
-            if (v != null) {
-              if (!validEmail(v)) {
-                return S.of(context).emailValidator;
-              }
-            }
-            return null;
-          }),
+                if (v != null) {
+                  if (!validEmail(v)) {
+                    return S.of(context).emailValidator;
+                  }
+                }
+                return null;
+              }),
+          SizedBox(
+            height: SizeConfig.h(15),
+          ),
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: IntlPhoneField(
+              searchText: S.of(context).searchHere,
+              initialCountryCode: WidgetsBinding.instance!.window.locale.countryCode,
+              dropdownTextStyle: TextStyle(fontSize: SizeConfig.w(12)),
+              style: TextStyle(fontSize: SizeConfig.w(12)),
+              showCountryFlag: countryCode == '+963' ? false : true,
+              onCountryChanged: (c) {
+                setState(() {
+                  countryCode = '+' + c.dialCode;
+                });
+              },
+              onChanged: (PhoneNumber phoneNumber) {
+                setState(() {
+                  countryCode = phoneNumber.countryCode;
+                  mobile = '0' + phoneNumber.number;
+                });
+              },
+              controller: phoneController,
+              invalidNumberMessage: S.of(context).mobileValidator,
+              // disableLengthCheck: true,
+              // validator: (v) {
+              //   if (v != null) {
+              //     if (!validPhoneNumber(mobile)) {
+              //       return S.of(context).mobileValidator;
+              //     }
+              //   }
+              //   return null;
+              // },
+              decoration: InputDecoration(
+                  hintTextDirection: TextDirection.rtl,
+                  alignLabelWithHint: true,
+                  suffixIcon: Icon(Icons.phone_android),
+                  labelText: S.of(context).phone_number,
+                  contentPadding: EdgeInsets.symmetric(
+                    // vertical: SizeConfig.h(2),
+                    horizontal: SizeConfig.w(10),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        style: BorderStyle.solid,
+                        color: AppStyle.primaryColor),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(100),
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        style: BorderStyle.solid,
+                        color: AppStyle.disabledColor),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(100),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1,
+                        style: BorderStyle.solid,
+                        color: AppStyle.primaryColor),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(100),
+                    ),
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  labelStyle: TextStyle(
+                    fontSize: SizeConfig.h(14),
+                  ),
+                  errorStyle: TextStyle(fontSize: SizeConfig.h(14)),
+                  fillColor: Colors.white70),
+            ),
+          ),
           SizedBox(
             height: SizeConfig.h(15),
           ),
           buildTextField(
               S.of(context).password, Icons.lock_outline, passwordController,
               validator: (v) {
-            if (v != null && !validPassword(v))
-              return S.of(context).passwordValidator;
-            return null;
-          }, obscureText: true),
+                if (v != null && !validPassword(v))
+                  return S.of(context).passwordValidator;
+                return null;
+              }, obscureText: true),
           SizedBox(
             height: SizeConfig.h(15),
           ),

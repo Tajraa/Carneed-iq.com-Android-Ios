@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:progiom_cms/core.dart';
 import 'package:progiom_cms/ecommerce.dart';
 import 'package:progiom_cms/homeSettings.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '/App/Widgets/AppErrorWidget.dart';
 import '/App/Widgets/AppLoader.dart';
 import '/App/Widgets/CustomAppBar.dart';
@@ -30,9 +31,9 @@ class ProductsDetailsPage extends StatefulWidget {
 
   ProductsDetailsPage(
       {required this.id,
-      Key? key,
-      required this.goToOptions,
-      this.forPointSale: false})
+        Key? key,
+        required this.goToOptions,
+        this.forPointSale: false})
       : super(key: key);
 
   @override
@@ -42,6 +43,7 @@ class ProductsDetailsPage extends StatefulWidget {
 class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   final ProductdetailsBloc bloc = ProductdetailsBloc();
   Map? preferences;
+  late YoutubePlayerController _controller;
 
   getPreferences() async {
     final result = await GetPreferences(sl()).call(NoParams());
@@ -65,6 +67,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
   @override
   void dispose() {
     bloc.close();
+    _controller.close();
     super.dispose();
   }
 
@@ -105,6 +108,10 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
             );
           else if (state is DetailsReady) {
             final product = state.product;
+            if (state.product.videoUrl != null)
+              _controller = YoutubePlayerController(
+                initialVideoId: state.product.videoUrl!,
+              );
             return Stack(
               alignment: Alignment.topCenter,
               children: [
@@ -143,11 +150,11 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                   children: [
                                     ...List.generate(
                                         product.rating ?? 0,
-                                        (index) => Icon(
-                                              Icons.star,
-                                              color: AppStyle.yellowColor,
-                                              size: SizeConfig.h(12),
-                                            ))
+                                            (index) => Icon(
+                                          Icons.star,
+                                          color: AppStyle.yellowColor,
+                                          size: SizeConfig.h(12),
+                                        ))
                                   ],
                                 ),
                                 SizedBox(
@@ -168,7 +175,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                         },
                                         child: Container(
                                           padding:
-                                              EdgeInsets.all(SizeConfig.h(2)),
+                                          EdgeInsets.all(SizeConfig.h(2)),
                                           child: Center(
                                             child: Icon(
                                               Icons.share_outlined,
@@ -192,9 +199,9 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                   text: _parseHtmlString(
                                       product.description ?? ""),
                                   onOpen: (link) async {
-                                    if (await canLaunch(link.url)) {
-                                      launch(link.url);
-                                    } else {}
+                                    // if (await canLaunch(link.url)) {
+                                    launch(link.url);
+                                    // } else {}
                                   },
                                   linkStyle: TextStyle(
                                     fontWeight: FontWeight.w500,
@@ -223,6 +230,55 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                 //     )
                                 //   },
                                 // ),
+                                if (state.product.fieldsData != null &&
+                                    state.product.fieldsData != [])
+                                  Column(
+                                    children:
+                                    state.product.fieldsData!.map((item) {
+                                      List values = item.values is List
+                                          ? item.values
+                                          .where((e) => e != null)
+                                          .toList()
+                                          : item.values != null
+                                          ? [item.values.toString()]
+                                          : [];
+                                      if (values.isNotEmpty) {
+                                        return Row(
+                                          children: [
+                                            Expanded(
+                                                child: Text(item.title! + ':')),
+                                            Expanded(
+                                              flex: 4,
+                                              child: Row(
+                                                children: values
+                                                    .map(
+                                                      (e) => Text(
+                                                    e.toString() +
+                                                        (values.last == e
+                                                            ? ''
+                                                            : ', '),
+                                                    style: AppStyle.vexa16
+                                                        .copyWith(
+                                                        color: AppStyle
+                                                            .secondaryColor),
+                                                  ),
+                                                )
+                                                    .toList(),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      } else {
+                                        return Container();
+                                      }
+                                    }).toList(),
+                                  ),
+                                SizedBox(height: SizeConfig.w(20)),
+                                if (state.product.videoUrl != null)
+                                  YoutubePlayerIFrame(
+                                    controller: _controller,
+                                    // showVideoProgressIndicator: true,
+                                  ),
                                 if (product.optionsData != null &&
                                     product.optionsData!.isNotEmpty)
                                   Column(
@@ -242,7 +298,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                         ],
                                       ),
                                       for (OptionData option
-                                          in product.optionsData!)
+                                      in product.optionsData!)
                                         Column(
                                           children: [
                                             SizedBox(
@@ -251,7 +307,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                             Row(
                                               children: [
                                                 Text(
-                                                  option.title + " :",
+                                                  (option.title ?? '') + " :",
                                                   style: AppStyle.vexa14,
                                                 )
                                               ],
@@ -263,62 +319,62 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                               children: [
                                                 Expanded(
                                                     child: Wrap(
-                                                  spacing: 4,
-                                                  children: [
-                                                    for (var i in option
-                                                        .allowedOptions.entries)
-                                                      RawChip(
-                                                          selectedColor:
+                                                      spacing: 4,
+                                                      children: [
+                                                        for (var i in option
+                                                            .allowedOptions.entries)
+                                                          RawChip(
+                                                              selectedColor:
                                                               AppStyle
                                                                   .primaryColor,
-                                                          checkmarkColor:
+                                                              checkmarkColor:
                                                               AppStyle
                                                                   .whiteColor,
-                                                          onSelected:
-                                                              (isSelected) {
-                                                            if (isSelected) {
-                                                              setState(() {
-                                                                if (!selectedOptions
-                                                                    .containsKey(option
+                                                              onSelected:
+                                                                  (isSelected) {
+                                                                if (isSelected) {
+                                                                  setState(() {
+                                                                    if (!selectedOptions
+                                                                        .containsKey(option
                                                                         .optionId
                                                                         .toString())) {
-                                                                  selectedOptions.putIfAbsent(
-                                                                      option
-                                                                          .optionId
-                                                                          .toString(),
-                                                                      () => i
-                                                                          .key
-                                                                          .toString());
-                                                                } else {
-                                                                  selectedOptions[
+                                                                      selectedOptions.putIfAbsent(
+                                                                          option
+                                                                              .optionId
+                                                                              .toString(),
+                                                                              () => i
+                                                                              .key
+                                                                              .toString());
+                                                                    } else {
+                                                                      selectedOptions[
                                                                       option
                                                                           .optionId
                                                                           .toString()] = i
-                                                                      .key
-                                                                      .toString();
+                                                                          .key
+                                                                          .toString();
+                                                                    }
+                                                                  });
                                                                 }
-                                                              });
-                                                            }
-                                                          },
-                                                          selected:
+                                                              },
+                                                              selected:
                                                               isOptionSelected(
                                                                   option,
                                                                   i.key
                                                                       .toString()),
-                                                          label: Text(
-                                                            i.value.toString(),
-                                                            style: AppStyle.vexa12.copyWith(
-                                                                color: isOptionSelected(
+                                                              label: Text(
+                                                                i.value.toString(),
+                                                                style: AppStyle.vexa12.copyWith(
+                                                                    color: isOptionSelected(
                                                                         option,
                                                                         i.key
                                                                             .toString())
-                                                                    ? AppStyle
+                                                                        ? AppStyle
                                                                         .whiteColor
-                                                                    : AppStyle
+                                                                        : AppStyle
                                                                         .secondaryColor),
-                                                          ))
-                                                  ],
-                                                ))
+                                                              ))
+                                                      ],
+                                                    ))
                                               ],
                                             )
                                           ],
@@ -347,19 +403,19 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                       children: [
                                         Text(
                                           product.presalePriceText != null &&
-                                                  product.presalePriceText!
-                                                          .substring(0, 4) !=
-                                                      '0.00'
+                                              product.presalePriceText!
+                                                  .substring(0, 4) !=
+                                                  '0.00'
                                               ? product.presalePriceText!
                                               : "",
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontSize: SizeConfig.h(12),
                                               fontFamily:
-                                                  AppStyle.priceFontFamily(
+                                              AppStyle.priceFontFamily(
                                                 product.presalePriceText ?? '',
                                               ),
                                               decoration:
-                                                  TextDecoration.lineThrough,
+                                              TextDecoration.lineThrough,
                                               decorationThickness: 2,
                                               fontWeight: FontWeight.normal,
                                               color: AppStyle.redColor),
@@ -368,8 +424,8 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                           product.priceText,
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontFamily:
-                                                  AppStyle.priceFontFamily(
-                                                      product.priceText),
+                                              AppStyle.priceFontFamily(
+                                                  product.priceText),
                                               fontSize: SizeConfig.h(22)),
                                         )
                                       ],
@@ -405,7 +461,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                       ),
                       SizedBox(
                         height: SizeConfig.h(45),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -477,7 +533,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border:
-                          Border.all(width: 2, color: AppStyle.disabledColor)),
+                      Border.all(width: 2, color: AppStyle.disabledColor)),
                 ),
               ),
             if (!widget.forPointSale)
@@ -488,15 +544,15 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
               Container(
                 child: Center(
                     child: Text(
-                  count.toString(),
-                  style: AppStyle.yaroCut14,
-                )),
+                      count.toString(),
+                      style: AppStyle.yaroCut14,
+                    )),
                 width: SizeConfig.h(46),
                 height: SizeConfig.h(40),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     border:
-                        Border.all(width: 2, color: AppStyle.disabledColor)),
+                    Border.all(width: 2, color: AppStyle.disabledColor)),
               ),
             if (!widget.forPointSale)
               SizedBox(
@@ -524,7 +580,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border:
-                          Border.all(width: 2, color: AppStyle.disabledColor)),
+                      Border.all(width: 2, color: AppStyle.disabledColor)),
                 ),
               ),
             if (!widget.forPointSale)
@@ -536,28 +592,28 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                   onTap: loadingCart
                       ? null
                       : () {
-                          if (product.optionsData != null &&
-                              product.optionsData!.isNotEmpty &&
-                              selectedOptions.keys.length !=
-                                  product.optionsData!.length) {
-                            Scrollable.ensureVisible(optionsKey.currentContext!,
-                                duration: const Duration(milliseconds: 350),
-                                curve: Curves.fastOutSlowIn,
-                                alignment: 0.5);
-                            AppSnackBar.show(context,
-                                S.of(context).selectOptions, ToastType.Info);
-                          } else {
-                            if (widget.forPointSale) {
-                              Navigator.pushNamed(context, "/checkout_points",
-                                  arguments: {
-                                    "total": product.pointsPrice ?? 0,
-                                    "product_id": product.id,
-                                    "options": selectedOptions
-                                  });
-                            } else
-                              addToCart();
-                          }
-                        },
+                    if (product.optionsData != null &&
+                        product.optionsData!.isNotEmpty &&
+                        selectedOptions.keys.length !=
+                            product.optionsData!.length) {
+                      Scrollable.ensureVisible(optionsKey.currentContext!,
+                          duration: const Duration(milliseconds: 350),
+                          curve: Curves.fastOutSlowIn,
+                          alignment: 0.5);
+                      AppSnackBar.show(context,
+                          S.of(context).selectOptions, ToastType.Info);
+                    } else {
+                      if (widget.forPointSale) {
+                        Navigator.pushNamed(context, "/checkout_points",
+                            arguments: {
+                              "total": product.pointsPrice ?? 0,
+                              "product_id": product.id,
+                              "options": selectedOptions
+                            });
+                      } else
+                        addToCart();
+                    }
+                  },
                   child: Container(
                     height: SizeConfig.h(26),
                     child: Row(
@@ -660,17 +716,17 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
               children: [
                 ...List.generate(
                     images.length,
-                    (index) => Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: SizeConfig.h(7)),
-                          height: 2,
-                          width: SizeConfig.h(50),
-                          decoration: BoxDecoration(
-                            color: index == currentIndex
-                                ? AppStyle.secondaryColor
-                                : AppStyle.disabledBorderColor,
-                          ),
-                        ))
+                        (index) => Container(
+                      margin:
+                      EdgeInsets.symmetric(horizontal: SizeConfig.h(7)),
+                      height: 2,
+                      width: SizeConfig.h(50),
+                      decoration: BoxDecoration(
+                        color: index == currentIndex
+                            ? AppStyle.secondaryColor
+                            : AppStyle.disabledBorderColor,
+                      ),
+                    ))
               ],
             ),
           )

@@ -211,7 +211,8 @@
   "change_points_with_products": "Exchange Points",
   "buyNow": "buy now",
   "share_to_get_points": "Share the app to get more points",
-  "dont_have_points_enogh": "you don't have enough points"
-
-
+  "dont_have_points_enogh": "you don't have enough points",
+  "clear": "Clear",
+  "choose_value": "Choose value",
+  "phone_number": "Phone number"
 }

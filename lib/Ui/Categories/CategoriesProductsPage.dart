@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:progiom_cms/homeSettings.dart';
 
 import '../../Utils/AppSnackBar.dart';
 import '../../injections.dart';
+import '../Search/pages/FilterDialoge.dart';
 import '/App/Widgets/AppErrorWidget.dart';
 import '/App/Widgets/AppLoader.dart';
 import '/App/Widgets/CustomAppBar.dart';
@@ -34,7 +37,14 @@ class CategoryProductsPage extends StatefulWidget {
 class _CategoryProductsPageState extends State<CategoryProductsPage> {
   late GetProducatsByCategoryParams selectedCategoryId;
   late final CategoryBloc bloc;
+  final homeSettingsBloc = sl<HomesettingsBloc>();
+  List<DynamicField>? dynamicFields;
+  List<dynamic>? filterValues;
   Map? preferences;
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  bool showResult = false;
+  int? maxPriceAllowed;
+  int? minPriceAllowed;
 
   getPreferences() async {
     final result = await GetPreferences(sl()).call(NoParams());
@@ -51,10 +61,20 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
   @override
   void initState() {
     getPreferences();
+    maxPriceAllowed =
+        sl<HomesettingsBloc>().settings!.filterData?.priceMax ?? 1;
+    minPriceAllowed =
+        sl<HomesettingsBloc>().settings!.filterData?.priceMin ?? 0;
     selectedCategoryId =
         GetProducatsByCategoryParams(categoryId: widget.selectedId.toString());
     bloc = CategoryBloc(selectedCategoryId);
-    bloc.add(LoadEvent(selectedCategoryId));
+    bloc.add(
+      LoadEvent(
+        {
+          'categoryId': widget.category.id.toString(),
+        },
+      ),
+    );
     super.initState();
   }
 
@@ -66,82 +86,383 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: CustomScrollView(
-          controller: bloc.scrollController,
-          slivers: [
-            buildAppBar(),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: SizeConfig.h(14),
-              ),
-            ),
-            buildSubCategories(),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: SizeConfig.h(30),
-              ),
-            ),
-            BlocBuilder(
-              bloc: bloc,
-              builder: (context, state) {
-                if (state is LoadingState) {
-                  return ProductsShimmerGrid(
-                    returnCustomScrollView: false,
-                  );
-                }
-                if (state is ErrorState) {
-                  return SliverFillRemaining(
-                      child: AppErrorWidget(text: state.error));
-                }
-                if (state is SuccessState<List<Product>>) {
-                  if (state.items.isEmpty) {
-                    return SliverFillRemaining(
-                        child: EmptyPlacholder(
-                      title: S.of(context).no_result,
-                      imageName: "assets/noSearch.png",
-                      subtitle: S.of(context).no_result_subtitle,
-                      actionTitle: S.of(context).continueShopping,
-                      onActionTap: () {
-                        Navigator.pop(context);
+    return BlocListener(
+      bloc: homeSettingsBloc,
+      listener: (context, HomesettingsState state) {
+        if (state is HomeSettingsReady) {
+          setState(() {
+            if (widget.category.id.toString() ==
+                selectedCategoryId.categoryId) {
+              dynamicFields = homeSettingsBloc.settings!.categories!
+                  .firstWhere((element) =>
+              element.id.toString() == widget.category.id.toString())
+                  .dynamicFilterFields;
+              filterValues =
+              state.dynamicFilters != null ? state.dynamicFilters : null;
+            } else {
+              dynamicFields = homeSettingsBloc.settings!.categories!
+                  .firstWhere((element) =>
+              element.id.toString() == widget.category.id.toString())
+                  .subCategories!
+                  .firstWhere((element) =>
+              element.id.toString() == selectedCategoryId.categoryId)
+                  .dynamicFilterFields;
+              filterValues =
+              state.dynamicFilters != null ? state.dynamicFilters : null;
+            }
+          });
+        }
+      },
+      child: BlocBuilder(
+          bloc: homeSettingsBloc,
+          builder: (context, HomesettingsState state) {
+            return Scaffold(
+                key: _key,
+                backgroundColor: Colors.white,
+                drawer: Container(
+                  width: SizeConfig.w(200),
+                  child: Drawer(
+                    backgroundColor: AppStyle.primaryColor,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: SizeConfig.w(30), left: SizeConfig.w(20)),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (filterValues != null) {
+                                for (int i = 0; i < filterValues!.length; i++) {
+                                  filterValues![i] =
+                                  filterValues![i] is List ? [] : null;
+                                }
+                                sl<HomesettingsBloc>()
+                                    .add(ChangeDynamicValues(filterValues!));
+                              }
+                            },
+                            child: Text(
+                              S.of(context).clear,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: AppStyle.secondaryColor,
+                                fontSize: SizeConfig.h(18),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: (dynamicFields?.length ?? 0) + 1,
+                            padding: EdgeInsets.all(SizeConfig.w(30)),
+                            itemBuilder: (context, index) {
+                              if (dynamicFields == null ||
+                                  index == dynamicFields!.length) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Map<int, dynamic> parsedValues = {};
+                                    for (int i = 0;
+                                    i < filterValues!.length;
+                                    i++) {
+                                      if (filterValues![i] is String) {
+                                        parsedValues[dynamicFields![i].id] =
+                                            dynamicFields![i]
+                                                .options
+                                                .indexOf(filterValues![i]);
+                                      } else {
+                                        List<int> innerList = [];
+                                        if (filterValues?[i] != null) {
+                                          for (var e in filterValues?[i]) {
+                                            innerList.add(dynamicFields![i]
+                                                .options
+                                                .indexOf(e));
+                                          }
+                                        }
+                                        parsedValues[dynamicFields![i].id] =
+                                            innerList;
+                                      }
+                                    }
+                                    print('parsed values is $parsedValues');
+                                    bloc.add(
+                                      LoadEvent(
+                                        {
+                                          'categoryId':
+                                          widget.category.id.toString(),
+                                          '_field_values': parsedValues,
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: AppStyle.secondaryColor,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    padding: EdgeInsets.all(SizeConfig.w(10)),
+                                    child: Text(
+                                      S.of(context).submit,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: AppStyle.whiteColor,
+                                        fontSize: SizeConfig.h(18),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              }
+                              return dynamicFields![index].type == 'select'
+                                  ? Padding(
+                                padding: EdgeInsets.all(SizeConfig.w(10)),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dynamicFields![index].title,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: AppStyle.secondaryColor,
+                                        fontSize: SizeConfig.h(18),
+                                      ),
+                                    ),
+                                    DropdownButton<String>(
+                                        value: filterValues![index],
+                                        isExpanded: true,
+                                        items: dynamicFields![index]
+                                            .options
+                                            .map((e) =>
+                                            DropdownMenuItem<String>(
+                                              child: Text(
+                                                e,
+                                                style: TextStyle(
+                                                  fontWeight:
+                                                  FontWeight.w500,
+                                                  color: AppStyle
+                                                      .secondaryColor,
+                                                  fontSize:
+                                                  SizeConfig.h(
+                                                      16),
+                                                ),
+                                              ),
+                                              value: e,
+                                            ))
+                                            .toList(),
+                                        onChanged: (String? value) {
+                                          filterValues![index] = value!;
+                                          homeSettingsBloc.add(
+                                              ChangeDynamicValues(
+                                                  filterValues!));
+                                        }),
+                                  ],
+                                ),
+                              )
+                                  : dynamicFields![index].type == 'radio'
+                                  ? Padding(
+                                padding:
+                                EdgeInsets.all(SizeConfig.w(10)),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dynamicFields![index].title,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color:
+                                        AppStyle.secondaryColor,
+                                        fontSize: SizeConfig.h(18),
+                                      ),
+                                    ),
+                                    ...dynamicFields![index]
+                                        .options
+                                        .map((e) => RadioListTile(
+                                      contentPadding:
+                                      EdgeInsets.zero,
+                                      groupValue:
+                                      filterValues?[index]
+                                      as String?,
+                                      onChanged:
+                                          (String? value) {
+                                        filterValues![index] =
+                                        value!;
+                                        homeSettingsBloc.add(
+                                            ChangeDynamicValues(
+                                                filterValues!));
+                                      },
+                                      value: e,
+                                      activeColor: AppStyle
+                                          .secondaryColor,
+                                      title: Text(
+                                        e,
+                                        style: TextStyle(
+                                          fontWeight:
+                                          FontWeight.w500,
+                                          color: AppStyle
+                                              .secondaryColor,
+                                          fontSize:
+                                          SizeConfig.h(
+                                              16),
+                                        ),
+                                      ),
+                                    ))
+                                        .toList(),
+                                  ],
+                                ),
+                              )
+                                  : dynamicFields![index].type == 'checkbox'
+                                  ? Padding(
+                                padding: EdgeInsets.all(
+                                    SizeConfig.w(10)),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dynamicFields![index].title,
+                                      style: TextStyle(
+                                        fontWeight:
+                                        FontWeight.w700,
+                                        color: AppStyle
+                                            .secondaryColor,
+                                        fontSize:
+                                        SizeConfig.h(18),
+                                      ),
+                                    ),
+                                    ...dynamicFields![index]
+                                        .options
+                                        .map((e) =>
+                                        CheckboxListTile(
+                                          contentPadding:
+                                          EdgeInsets.zero,
+                                          onChanged:
+                                              (bool? value) {
+                                            (filterValues![index]
+                                            as List)
+                                                .contains(
+                                                e)
+                                                ? (filterValues![
+                                            index]
+                                            as List)
+                                                .remove(e)
+                                                : (filterValues![
+                                            index]
+                                            as List)
+                                                .add(e);
+                                            homeSettingsBloc.add(
+                                                ChangeDynamicValues(
+                                                    filterValues!));
+                                          },
+                                          value: (filterValues![
+                                          index]
+                                          as List)
+                                              .contains(e),
+                                          activeColor: AppStyle
+                                              .secondaryColor,
+                                          title: Text(
+                                            e,
+                                            style: TextStyle(
+                                              fontWeight:
+                                              FontWeight
+                                                  .w500,
+                                              color: AppStyle
+                                                  .secondaryColor,
+                                              fontSize:
+                                              SizeConfig
+                                                  .h(16),
+                                            ),
+                                          ),
+                                        ))
+                                        .toList(),
+                                  ],
+                                ),
+                              )
+                                  : Container();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                body: CustomScrollView(
+                  controller: bloc.scrollController,
+                  slivers: [
+                    buildAppBar(),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: SizeConfig.h(14),
+                      ),
+                    ),
+                    buildSubCategories(),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: SizeConfig.h(30),
+                      ),
+                    ),
+                    BlocBuilder(
+                      bloc: bloc,
+                      builder: (context, state) {
+                        if (state is LoadingState) {
+                          return ProductsShimmerGrid(
+                            returnCustomScrollView: false,
+                          );
+                        }
+                        if (state is ErrorState) {
+                          return SliverFillRemaining(
+                              child: AppErrorWidget(text: state.error));
+                        }
+                        if (state is SuccessState<List<Product>>) {
+                          if (state.items.isEmpty) {
+                            return SliverFillRemaining(
+                                child: EmptyPlacholder(
+                                  title: S.of(context).no_result,
+                                  imageName: "assets/noSearch.png",
+                                  subtitle: S.of(context).no_result_subtitle,
+                                  actionTitle: S.of(context).continueShopping,
+                                  onActionTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                ));
+                          }
+                          return SliverGrid(
+                            gridDelegate:
+                            SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: SizeConfig.h(230),
+                                crossAxisSpacing:
+                                0, //cuase the card already taken margin
+                                mainAxisExtent: 250,
+                                mainAxisSpacing: SizeConfig.h(13)),
+                            delegate:
+                            SliverChildBuilderDelegate((context, index) {
+                              return ProductCard(product: state.items[index]);
+                            }, childCount: state.items.length),
+                          );
+                        }
+                        return SliverToBoxAdapter();
                       },
-                    ));
-                  }
-                  return SliverGrid(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: SizeConfig.h(230),
-                        crossAxisSpacing:
-                            0, //cuase the card already taken margin
-                        mainAxisExtent: 250,
-                        mainAxisSpacing: SizeConfig.h(13)),
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      return ProductCard(product: state.items[index]);
-                    }, childCount: state.items.length),
-                  );
-                }
-                return SliverToBoxAdapter();
-              },
-            ),
-            SliverToBoxAdapter(
-              child: BlocBuilder(
-                bloc: bloc,
-                builder: (context, state) {
-                  if (state is SuccessState) if (!state.hasReachedMax)
-                    return Center(
-                      child: AppLoader(),
-                    );
-                  return Container();
-                },
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: SizeConfig.h(25),
-              ),
-            )
-          ],
-        ));
+                    ),
+                    SliverToBoxAdapter(
+                      child: BlocBuilder(
+                        bloc: bloc,
+                        builder: (context, state) {
+                          if (state is SuccessState) if (!state.hasReachedMax)
+                            return Center(
+                              child: AppLoader(),
+                            );
+                          return Container();
+                        },
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: SizeConfig.h(25),
+                      ),
+                    )
+                  ],
+                ));
+          }),
+    );
   }
 
   SliverToBoxAdapter buildAppBar() {
@@ -183,7 +504,66 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
               ),
             SizedBox(
               width: SizeConfig.h(24),
-            )
+            ),
+            GestureDetector(
+              onTap: () {
+                sl<HomesettingsBloc>().add(AddDynamicFields(
+                    widget.category.id.toString(),
+                    selectedCategoryId.categoryId));
+                // _key.currentState?.openDrawer();
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30))),
+                    context: context,
+                    builder: (BuildContext context) {
+                      return FilterDialoge(
+                        hasCategories: false,
+                        parentId: widget.category.id,
+                        currentRangeValues: RangeValues(
+                            (bloc.minPrice ?? minPriceAllowed)?.toDouble() ?? 0,
+                            (bloc.maxPrice ?? maxPriceAllowed)?.toDouble() ??
+                                1),
+                        minPriceAllowed: minPriceAllowed ?? 0,
+                        maxPriceAllowed: maxPriceAllowed ?? 1,
+                        categoryId: int.parse(selectedCategoryId.categoryId),
+                        rating: bloc.rating,
+                        sortBy: bloc.orderColumn + "-" + bloc.orderDirection,
+                      );
+                    }).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      bloc.categoryId = value["categoryId"];
+                      bloc.maxPrice = value["maxPrice"];
+                      bloc.minPrice = value["minPrice"];
+                      bloc.orderColumn = value["orderColumn"];
+                      bloc.orderDirection = value["orderDir"];
+                      bloc.rating = value["rating"];
+                      showResult = true;
+                    });
+                    bloc.add(
+                      LoadEvent(
+                        {
+                          'categoryId': widget.category.id.toString(),
+                          '_field_values': value["_field_values"],
+                        },
+                      ),
+                    );
+                  }
+                });
+              },
+              child: Icon(
+                Icons.filter_list_outlined,
+                color: AppStyle.primaryColor,
+                size: SizeConfig.w(20),
+              ),
+            ),
+            SizedBox(
+              width: SizeConfig.h(24),
+            ),
           ],
         ),
       ),
@@ -207,7 +587,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                     itemBuilder: (context, index) {
                       if (index == 0) return allProductsSection();
                       final category =
-                          widget.category.subCategories![index - 1];
+                      widget.category.subCategories![index - 1];
                       final isSelected = selectedCategoryId.categoryId ==
                           category.id.toString();
                       return GestureDetector(
@@ -216,12 +596,16 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                             selectedCategoryId = GetProducatsByCategoryParams(
                                 categoryId: category.id.toString());
                           });
-                          bloc.add(LoadEvent(selectedCategoryId));
+                          filterValues = null;
+                          dynamicFields = null;
+                          bloc.add(LoadEvent({
+                            'categoryId': selectedCategoryId.categoryId,
+                          }));
                         },
                         child: Container(
                           decoration: BoxDecoration(
                             boxShadow:
-                                isSelected ? [AppStyle.boxShadow3on6] : null,
+                            isSelected ? [AppStyle.boxShadow3on6] : null,
                             color: isSelected
                                 ? AppStyle.primaryColor
                                 : Colors.white,
@@ -259,17 +643,17 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                                   children: [
                                     Expanded(
                                         child: Text(
-                                      category.title,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          height: 1.1,
-                                          fontSize: 13,
-                                          color: isSelected
-                                              ? Colors.white
-                                              : AppStyle.greyDark),
-                                    ))
+                                          category.title,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              height: 1.1,
+                                              fontSize: 13,
+                                              color: isSelected
+                                                  ? Colors.white
+                                                  : AppStyle.greyDark),
+                                        ))
                                   ],
                                 ),
                               )
@@ -293,7 +677,11 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
           selectedCategoryId = GetProducatsByCategoryParams(
               categoryId: widget.category.id.toString());
         });
-        bloc.add(LoadEvent(selectedCategoryId));
+        filterValues = null;
+        dynamicFields = null;
+        bloc.add(LoadEvent({
+          'categoryId': selectedCategoryId.categoryId,
+        }));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -333,15 +721,15 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                 children: [
                   Expanded(
                       child: Text(
-                    S.of(context).all,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        height: 1.1,
-                        fontSize: 13,
-                        color: isSelected ? Colors.white : AppStyle.greyDark),
-                  ))
+                        S.of(context).all,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            height: 1.1,
+                            fontSize: 13,
+                            color: isSelected ? Colors.white : AppStyle.greyDark),
+                      ))
                 ],
               ),
             )

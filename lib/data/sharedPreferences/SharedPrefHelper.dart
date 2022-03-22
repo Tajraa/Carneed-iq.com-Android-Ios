@@ -32,6 +32,16 @@ class PrefsHelper {
     return p.getString(AuthConstants.Language);
   }
 
+  saveCurrencyToSharedPref(String currency) async {
+    final p = await (_getSharedPref);
+    return p.setString(AuthConstants.Currency, currency);
+  }
+
+  loadCurrencyFromSharedPref() async {
+    final p = await (_getSharedPref);
+    print('hoho + ${p.getString(AuthConstants.Currency)}');
+    return p.getString(AuthConstants.Currency);
+  }
  
 
   // Future<User> getUser() async {
