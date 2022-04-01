@@ -205,7 +205,9 @@ class _LoginPageState extends State<LoginPage>
                                       if (isSignUp) {
                                         sl<AuthBloc>().add(SignUpEvent({
                                           "name": nameController.text,
-                                          "email": emailController.text,
+                                          "email": emailController.text == ''
+                                              ? null
+                                              : emailController.text,
                                           "country_code": countryCode,
                                           "mobile": mobile,
                                           "password": passwordController.text,
@@ -555,7 +557,7 @@ class _LoginPageState extends State<LoginPage>
               S.of(context).e_mail, Icons.email_outlined, emailController,
               validator: (v) {
                 if (v != null) {
-                  if (!validEmail(v)) {
+                  if (!validEmail(v) && v != '') {
                     return S.of(context).emailValidator;
                   }
                 }
@@ -568,7 +570,8 @@ class _LoginPageState extends State<LoginPage>
             textDirection: TextDirection.ltr,
             child: IntlPhoneField(
               searchText: S.of(context).searchHere,
-              initialCountryCode: WidgetsBinding.instance!.window.locale.countryCode,
+              initialCountryCode:
+              WidgetsBinding.instance!.window.locale.countryCode,
               dropdownTextStyle: TextStyle(fontSize: SizeConfig.w(12)),
               style: TextStyle(fontSize: SizeConfig.w(12)),
               showCountryFlag: countryCode == '+963' ? false : true,

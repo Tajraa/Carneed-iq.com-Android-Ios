@@ -124,8 +124,17 @@ initFirebaseMessaging() async {
   //         .push(MaterialPageRoute(builder: (context) => Notifications()));
   //   }
   // };
-  await Firebase.initializeApp();
+  print('lol here we go');
+  await Firebase.initializeApp().then((value) {
+    print('init firebase is ${value.name}');
+  });
+  print('initialize finished');
   //  NotificationClass.notificationClass.init();
+  FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');

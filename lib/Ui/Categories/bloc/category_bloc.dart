@@ -16,6 +16,7 @@ class CategoryBloc extends SimpleLoaderBloc<List<Product>> {
   String orderDirection = "asc";
   int? categoryId;
   int? rating;
+
   CategoryBloc(GetProducatsByCategoryParams params)
       : super(eventParams: params);
 
@@ -25,18 +26,19 @@ class CategoryBloc extends SimpleLoaderBloc<List<Product>> {
       page = 0;
     }
     page++;
+    if (event is LoadMoreEvent) print('params ar ${event.params.categoryId}');
     final String parentId = (event is LoadEvent)
         ? event.params['categoryId']
         : (event is LoadMoreEvent)
-        ? event.params['categoryId']
-        : "";
+            ? event.params.categoryId
+            : "";
     return GetProducatsByCategory(sl()).call(ProducatsByCategoryParams(
         parentId: parentId,
         page: page,
-        minPrice: minPrice
-            ?.toString(), // if you delete ? then will send string "null"
-        maxPrice: maxPrice
-            ?.toString(), // if you delete ? then will send string "null"
+        minPrice: minPrice?.toString(),
+        // if you delete ? then will send string "null"
+        maxPrice: maxPrice?.toString(),
+        // if you delete ? then will send string "null"
         orderColumn: orderColumn,
         orderDirection: orderDirection,
         categoryId: categoryId,

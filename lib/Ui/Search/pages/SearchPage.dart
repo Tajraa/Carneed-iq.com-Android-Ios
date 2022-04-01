@@ -33,6 +33,7 @@ class _SearchPageState extends State<SearchPage> {
   bool showResult = false;
   int? maxPriceAllowed;
   int? minPriceAllowed;
+
   @override
   void dispose() {
     searchBLoc.close();
@@ -74,6 +75,7 @@ class _SearchPageState extends State<SearchPage> {
 
   List<String>? searchHistory;
   List<Product>? commonSearches;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,22 +149,22 @@ class _SearchPageState extends State<SearchPage> {
                       slivers: [
                         SliverGrid(
                           gridDelegate:
-                          SliverGridDelegateWithMaxCrossAxisExtent(
-                              crossAxisSpacing:
-                              0, //cuase the card already taken margin
-                              maxCrossAxisExtent: SizeConfig.w(230),
-                              mainAxisExtent: SizeConfig.w(220),
-                              mainAxisSpacing: SizeConfig.w(13)),
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                  crossAxisSpacing:
+                                      0, //cuase the card already taken margin
+                                  maxCrossAxisExtent: SizeConfig.w(230),
+                                  mainAxisExtent: SizeConfig.w(220),
+                                  mainAxisSpacing: SizeConfig.w(13)),
                           delegate:
-                          SliverChildBuilderDelegate((context, index) {
+                              SliverChildBuilderDelegate((context, index) {
                             return ProductCard(product: state.items[index]);
                           }, childCount: state.items.length),
                         ),
                         if (!state.hasReachedMax)
                           SliverToBoxAdapter(
                               child: Center(
-                                child: AppLoader(),
-                              )),
+                            child: AppLoader(),
+                          )),
                         SliverToBoxAdapter(
                           child: SizedBox(
                             height: SizeConfig.h(25),
@@ -304,7 +306,7 @@ class _SearchPageState extends State<SearchPage> {
                     product.title,
                     maxLines: 2,
                     style:
-                    AppStyle.vexa14.copyWith(fontWeight: FontWeight.bold),
+                        AppStyle.vexa14.copyWith(fontWeight: FontWeight.bold),
                   ),
                 )
               ],
@@ -316,6 +318,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   final Debouncer debouncer = Debouncer();
+
   Widget buildSearchBar(BuildContext context) {
     return CustomAppBar(
       isCustom: true,
@@ -383,9 +386,9 @@ class _SearchPageState extends State<SearchPage> {
                                 maxWidth: SizeConfig.h(22),
                               ),
                               labelStyle:
-                              AppStyle.vexa14.copyWith(color: Colors.black),
+                                  AppStyle.vexa14.copyWith(color: Colors.black),
                               hintStyle:
-                              AppStyle.vexa14.copyWith(color: Colors.black),
+                                  AppStyle.vexa14.copyWith(color: Colors.black),
                               hintText: S.of(context).searchHere,
                               border: InputBorder.none),
                         ),
@@ -409,10 +412,10 @@ class _SearchPageState extends State<SearchPage> {
                             return FilterDialoge(
                               currentRangeValues: RangeValues(
                                   (searchBLoc.minPrice ?? minPriceAllowed)
-                                      ?.toDouble() ??
+                                          ?.toDouble() ??
                                       0,
                                   (searchBLoc.maxPrice ?? maxPriceAllowed)
-                                      ?.toDouble() ??
+                                          ?.toDouble() ??
                                       1),
                               minPriceAllowed: minPriceAllowed ?? 0,
                               maxPriceAllowed: maxPriceAllowed ?? 1,
@@ -445,9 +448,9 @@ class _SearchPageState extends State<SearchPage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: (searchBLoc.categoryId != null ||
-                              searchBLoc.maxPrice != null ||
-                              searchBLoc.minPrice != null ||
-                              searchBLoc.rating != null)
+                                  searchBLoc.maxPrice != null ||
+                                  searchBLoc.minPrice != null ||
+                                  searchBLoc.rating != null)
                               ? AppStyle.warningColor
                               : AppStyle.secondaryColor),
                       child: Column(
@@ -465,7 +468,7 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

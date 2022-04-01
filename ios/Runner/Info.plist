@@ -38,6 +38,8 @@
 	<string>429404528873756</string>
 	<key>FacebookDisplayName</key>
 	<string>Carneed</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>itms-beta</string>

@@ -142,12 +142,12 @@ class _ProductCardState extends State<ProductCard> {
                               children: [
                                 Expanded(
                                     child: Text(
-                                  product.priceText,
+                                  product.priceText ?? '',
                                   style: TextStyle(
                                       height: 1.1,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: AppStyle.priceFontFamily(
-                                          product.priceText),
+                                          product.priceText ?? ''),
                                       fontSize: 14,
                                       color: AppStyle.primaryColor),
                                   maxLines: 1,
@@ -271,7 +271,7 @@ class _ProductCardState extends State<ProductCard> {
                       width: 24,
                       height: 24,
                       child: Icon(
-                          product.isFavorite
+                          (product.isFavorite ?? false)
                               ? Icons.favorite
                               : Icons.favorite_border,
                           color: Colors.red,
@@ -291,12 +291,12 @@ class _ProductCardState extends State<ProductCard> {
 
   void setIsFavorite() {
     setState(() {
-      product.isFavorite = !product.isFavorite;
+      product.isFavorite = !(product.isFavorite ?? false);
     });
 
     debouncer.run(() {
       SetIsFavorite(sl()).call(SetIsFavoriteParams(
-          isFavorite: product.isFavorite, itemId: product.id.toString()));
+          isFavorite: product.isFavorite ?? false, itemId: product.id.toString()));
     });
   }
 

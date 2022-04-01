@@ -1230,7 +1230,7 @@ class S {
     );
   }
 
-  /// عند إضافة منتجات إلى السلة ستظهر هنا. `
+  /// `عند إضافة منتجات إلى السلة ستظهر هنا.`
   String get cart_empty_subtitle {
     return Intl.message(
       'عند إضافة منتجات إلى السلة ستظهر هنا.',
@@ -2199,6 +2199,16 @@ class S {
       args: [],
     );
   }
+
+  /// `aa`
+  String get haha {
+    return Intl.message(
+      'aa',
+      name: 'haha',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -2214,10 +2224,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
-
   @override
   Future<S> load(Locale locale) => S.load(locale);
-
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

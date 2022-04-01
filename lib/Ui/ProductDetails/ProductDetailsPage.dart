@@ -421,11 +421,11 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                               color: AppStyle.redColor),
                                         ),
                                         Text(
-                                          product.priceText,
+                                          product.priceText ?? '',
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontFamily:
                                               AppStyle.priceFontFamily(
-                                                  product.priceText),
+                                                  product.priceText ?? ''),
                                               fontSize: SizeConfig.h(22)),
                                         )
                                       ],
@@ -465,7 +465,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                     ],
                   ),
                 ),
-                Container(child: buildAppBar(product.isFavorite, product.id)),
+                Container(child: buildAppBar(product.isFavorite ?? false, product.id)),
                 buildAddToCart(product),
               ],
             );

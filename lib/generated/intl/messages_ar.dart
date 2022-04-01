@@ -92,7 +92,9 @@ class MessageLookup extends MessageLookupByLibrary {
             " عن طريق ارسال رسالة واتساب للبائع تحوي معلومات السلة دون الحاجة لتسجيل الدخول"),
         "checkout_whatsapp_tour_title":
             MessageLookupByLibrary.simpleMessage("شراء السلة عن طريق الواتساب"),
+        "choose_value": MessageLookupByLibrary.simpleMessage("اختر قيمة"),
         "city": MessageLookupByLibrary.simpleMessage("المدينة:"),
+        "clear": MessageLookupByLibrary.simpleMessage("مسح"),
         "click_twice":
             MessageLookupByLibrary.simpleMessage("اضغط مرتين للخروج"),
         "code": MessageLookupByLibrary.simpleMessage("الكود"),
@@ -158,6 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور ؟"),
         "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
         "google": MessageLookupByLibrary.simpleMessage("غوغل"),
+        "haha": MessageLookupByLibrary.simpleMessage("aa"),
         "haveAnAccount": MessageLookupByLibrary.simpleMessage("لديك حساب ؟ "),
         "here": MessageLookupByLibrary.simpleMessage("هنا"),
         "high_price": MessageLookupByLibrary.simpleMessage("الأعلى سعراً"),
@@ -240,6 +243,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentMethod": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
         "personalInfo":
             MessageLookupByLibrary.simpleMessage("المعلومات الشخصية"),
+        "phone_number": MessageLookupByLibrary.simpleMessage("رقم الموبايل"),
         "please_sign_in":
             MessageLookupByLibrary.simpleMessage("الرجاء تسجيل الدخول"),
         "please_sign_up":

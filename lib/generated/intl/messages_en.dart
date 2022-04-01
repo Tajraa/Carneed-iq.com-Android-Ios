@@ -96,7 +96,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "By sending a WhatsApp message to the seller containing the basket information without the need to log in"),
         "checkout_whatsapp_tour_title":
             MessageLookupByLibrary.simpleMessage("Purchase cart via WhatsApp"),
+        "choose_value": MessageLookupByLibrary.simpleMessage("Choose value"),
         "city": MessageLookupByLibrary.simpleMessage("City:"),
+        "clear": MessageLookupByLibrary.simpleMessage("Clear"),
         "click_twice":
             MessageLookupByLibrary.simpleMessage("Double click to exit"),
         "code": MessageLookupByLibrary.simpleMessage("Code"),
@@ -163,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Forgot your password?"),
         "fullName": MessageLookupByLibrary.simpleMessage("Full name"),
         "google": MessageLookupByLibrary.simpleMessage("Google"),
+        "haha": MessageLookupByLibrary.simpleMessage("aa"),
         "haveAnAccount":
             MessageLookupByLibrary.simpleMessage("Have an account?"),
         "here": MessageLookupByLibrary.simpleMessage("Here"),
@@ -242,6 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentMethod": MessageLookupByLibrary.simpleMessage("Payment method"),
         "personalInfo":
             MessageLookupByLibrary.simpleMessage("Personal information"),
+        "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
         "please_sign_in":
             MessageLookupByLibrary.simpleMessage("Please sign in"),
         "please_sign_up":
