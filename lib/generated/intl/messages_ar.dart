@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("هل أنت متأكد."),
         "back": MessageLookupByLibrary.simpleMessage("رجوع"),
+        "blog": MessageLookupByLibrary.simpleMessage("المدونة"),
         "blogs": MessageLookupByLibrary.simpleMessage("المدونة"),
         "brand": MessageLookupByLibrary.simpleMessage("الماركة"),
         "buyNow": MessageLookupByLibrary.simpleMessage("اشتري الأن"),
@@ -150,8 +151,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "الرجاء إدخال الرمز المرسل للبريد الالكتروني"),
         "expiryDate": MessageLookupByLibrary.simpleMessage("تاريخ الإنتهاء"),
         "facebook": MessageLookupByLibrary.simpleMessage("فيسبوك"),
-        "favorite_tour": MessageLookupByLibrary.simpleMessage(
-            "هنا تجد المنتجات التي قمت بإضافتها للمفضلة."),
+        "favorite_tour":
+            MessageLookupByLibrary.simpleMessage("هنا تجد اخر المستجدات."),
         "featured_products":
             MessageLookupByLibrary.simpleMessage("منتجات جديدة"),
         "features": MessageLookupByLibrary.simpleMessage("المميزات"),
@@ -160,7 +161,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("هل نسيت كلمة المرور ؟"),
         "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
         "google": MessageLookupByLibrary.simpleMessage("غوغل"),
-        "haha": MessageLookupByLibrary.simpleMessage("aa"),
         "haveAnAccount": MessageLookupByLibrary.simpleMessage("لديك حساب ؟ "),
         "here": MessageLookupByLibrary.simpleMessage("هنا"),
         "high_price": MessageLookupByLibrary.simpleMessage("الأعلى سعراً"),

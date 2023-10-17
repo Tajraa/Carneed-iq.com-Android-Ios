@@ -31,9 +31,9 @@ class ProductsDetailsPage extends StatefulWidget {
 
   ProductsDetailsPage(
       {required this.id,
-        Key? key,
-        required this.goToOptions,
-        this.forPointSale: false})
+      Key? key,
+      required this.goToOptions,
+      this.forPointSale: false})
       : super(key: key);
 
   @override
@@ -150,11 +150,11 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                   children: [
                                     ...List.generate(
                                         product.rating ?? 0,
-                                            (index) => Icon(
-                                          Icons.star,
-                                          color: AppStyle.yellowColor,
-                                          size: SizeConfig.h(12),
-                                        ))
+                                        (index) => Icon(
+                                              Icons.star,
+                                              color: AppStyle.yellowColor,
+                                              size: SizeConfig.h(12),
+                                            ))
                                   ],
                                 ),
                                 SizedBox(
@@ -175,7 +175,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                         },
                                         child: Container(
                                           padding:
-                                          EdgeInsets.all(SizeConfig.h(2)),
+                                              EdgeInsets.all(SizeConfig.h(2)),
                                           child: Center(
                                             child: Icon(
                                               Icons.share_outlined,
@@ -234,14 +234,14 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                     state.product.fieldsData != [])
                                   Column(
                                     children:
-                                    state.product.fieldsData!.map((item) {
+                                        state.product.fieldsData!.map((item) {
                                       List values = item.values is List
                                           ? item.values
-                                          .where((e) => e != null)
-                                          .toList()
+                                              .where((e) => e != null)
+                                              .toList()
                                           : item.values != null
-                                          ? [item.values.toString()]
-                                          : [];
+                                              ? [item.values.toString()]
+                                              : [];
                                       if (values.isNotEmpty) {
                                         return Row(
                                           children: [
@@ -253,16 +253,16 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                                 children: values
                                                     .map(
                                                       (e) => Text(
-                                                    e.toString() +
-                                                        (values.last == e
-                                                            ? ''
-                                                            : ', '),
-                                                    style: AppStyle.vexa16
-                                                        .copyWith(
-                                                        color: AppStyle
-                                                            .secondaryColor),
-                                                  ),
-                                                )
+                                                        e.toString() +
+                                                            (values.last == e
+                                                                ? ''
+                                                                : ', '),
+                                                        style: AppStyle.vexa16
+                                                            .copyWith(
+                                                                color: AppStyle
+                                                                    .secondaryColor),
+                                                      ),
+                                                    )
                                                     .toList(),
                                               ),
                                             ),
@@ -298,7 +298,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                         ],
                                       ),
                                       for (OptionData option
-                                      in product.optionsData!)
+                                          in product.optionsData!)
                                         Column(
                                           children: [
                                             SizedBox(
@@ -319,62 +319,62 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                               children: [
                                                 Expanded(
                                                     child: Wrap(
-                                                      spacing: 4,
-                                                      children: [
-                                                        for (var i in option
-                                                            .allowedOptions.entries)
-                                                          RawChip(
-                                                              selectedColor:
+                                                  spacing: 4,
+                                                  children: [
+                                                    for (var i in option
+                                                        .allowedOptions.entries)
+                                                      RawChip(
+                                                          selectedColor:
                                                               AppStyle
                                                                   .primaryColor,
-                                                              checkmarkColor:
+                                                          checkmarkColor:
                                                               AppStyle
                                                                   .whiteColor,
-                                                              onSelected:
-                                                                  (isSelected) {
-                                                                if (isSelected) {
-                                                                  setState(() {
-                                                                    if (!selectedOptions
-                                                                        .containsKey(option
+                                                          onSelected:
+                                                              (isSelected) {
+                                                            if (isSelected) {
+                                                              setState(() {
+                                                                if (!selectedOptions
+                                                                    .containsKey(option
                                                                         .optionId
                                                                         .toString())) {
-                                                                      selectedOptions.putIfAbsent(
-                                                                          option
-                                                                              .optionId
-                                                                              .toString(),
-                                                                              () => i
-                                                                              .key
-                                                                              .toString());
-                                                                    } else {
-                                                                      selectedOptions[
+                                                                  selectedOptions.putIfAbsent(
+                                                                      option
+                                                                          .optionId
+                                                                          .toString(),
+                                                                      () => i
+                                                                          .key
+                                                                          .toString());
+                                                                } else {
+                                                                  selectedOptions[
                                                                       option
                                                                           .optionId
                                                                           .toString()] = i
-                                                                          .key
-                                                                          .toString();
-                                                                    }
-                                                                  });
+                                                                      .key
+                                                                      .toString();
                                                                 }
-                                                              },
-                                                              selected:
+                                                              });
+                                                            }
+                                                          },
+                                                          selected:
                                                               isOptionSelected(
                                                                   option,
                                                                   i.key
                                                                       .toString()),
-                                                              label: Text(
-                                                                i.value.toString(),
-                                                                style: AppStyle.vexa12.copyWith(
-                                                                    color: isOptionSelected(
+                                                          label: Text(
+                                                            i.value.toString(),
+                                                            style: AppStyle.vexa12.copyWith(
+                                                                color: isOptionSelected(
                                                                         option,
                                                                         i.key
                                                                             .toString())
-                                                                        ? AppStyle
+                                                                    ? AppStyle
                                                                         .whiteColor
-                                                                        : AppStyle
+                                                                    : AppStyle
                                                                         .secondaryColor),
-                                                              ))
-                                                      ],
-                                                    ))
+                                                          ))
+                                                  ],
+                                                ))
                                               ],
                                             )
                                           ],
@@ -403,19 +403,19 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                       children: [
                                         Text(
                                           product.presalePriceText != null &&
-                                              product.presalePriceText!
-                                                  .substring(0, 4) !=
-                                                  '0.00'
+                                                  product.presalePriceText!
+                                                          .substring(0, 4) !=
+                                                      '0.00'
                                               ? product.presalePriceText!
                                               : "",
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontSize: SizeConfig.h(12),
                                               fontFamily:
-                                              AppStyle.priceFontFamily(
+                                                  AppStyle.priceFontFamily(
                                                 product.presalePriceText ?? '',
                                               ),
                                               decoration:
-                                              TextDecoration.lineThrough,
+                                                  TextDecoration.lineThrough,
                                               decorationThickness: 2,
                                               fontWeight: FontWeight.normal,
                                               color: AppStyle.redColor),
@@ -424,8 +424,8 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                                           product.priceText ?? '',
                                           style: AppStyle.yaroCut14.copyWith(
                                               fontFamily:
-                                              AppStyle.priceFontFamily(
-                                                  product.priceText ?? ''),
+                                                  AppStyle.priceFontFamily(
+                                                      product.priceText ?? ''),
                                               fontSize: SizeConfig.h(22)),
                                         )
                                       ],
@@ -465,7 +465,9 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                     ],
                   ),
                 ),
-                Container(child: buildAppBar(product.isFavorite ?? false, product.id)),
+                Container(
+                    child:
+                        buildAppBar(product.isFavorite ?? false, product.id)),
                 buildAddToCart(product),
               ],
             );
@@ -533,7 +535,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border:
-                      Border.all(width: 2, color: AppStyle.disabledColor)),
+                          Border.all(width: 2, color: AppStyle.disabledColor)),
                 ),
               ),
             if (!widget.forPointSale)
@@ -544,15 +546,15 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
               Container(
                 child: Center(
                     child: Text(
-                      count.toString(),
-                      style: AppStyle.yaroCut14,
-                    )),
+                  count.toString(),
+                  style: AppStyle.yaroCut14,
+                )),
                 width: SizeConfig.h(46),
                 height: SizeConfig.h(40),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     border:
-                    Border.all(width: 2, color: AppStyle.disabledColor)),
+                        Border.all(width: 2, color: AppStyle.disabledColor)),
               ),
             if (!widget.forPointSale)
               SizedBox(
@@ -580,7 +582,7 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border:
-                      Border.all(width: 2, color: AppStyle.disabledColor)),
+                          Border.all(width: 2, color: AppStyle.disabledColor)),
                 ),
               ),
             if (!widget.forPointSale)
@@ -592,28 +594,28 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                   onTap: loadingCart
                       ? null
                       : () {
-                    if (product.optionsData != null &&
-                        product.optionsData!.isNotEmpty &&
-                        selectedOptions.keys.length !=
-                            product.optionsData!.length) {
-                      Scrollable.ensureVisible(optionsKey.currentContext!,
-                          duration: const Duration(milliseconds: 350),
-                          curve: Curves.fastOutSlowIn,
-                          alignment: 0.5);
-                      AppSnackBar.show(context,
-                          S.of(context).selectOptions, ToastType.Info);
-                    } else {
-                      if (widget.forPointSale) {
-                        Navigator.pushNamed(context, "/checkout_points",
-                            arguments: {
-                              "total": product.pointsPrice ?? 0,
-                              "product_id": product.id,
-                              "options": selectedOptions
-                            });
-                      } else
-                        addToCart();
-                    }
-                  },
+                          if (product.optionsData != null &&
+                              product.optionsData!.isNotEmpty &&
+                              selectedOptions.keys.length !=
+                                  product.optionsData!.length) {
+                            Scrollable.ensureVisible(optionsKey.currentContext!,
+                                duration: const Duration(milliseconds: 350),
+                                curve: Curves.fastOutSlowIn,
+                                alignment: 0.5);
+                            AppSnackBar.show(context,
+                                S.of(context).selectOptions, ToastType.Info);
+                          } else {
+                            if (widget.forPointSale) {
+                              Navigator.pushNamed(context, "/checkout_points",
+                                  arguments: {
+                                    "total": product.pointsPrice ?? 0,
+                                    "product_id": product.id,
+                                    "options": selectedOptions
+                                  });
+                            } else
+                              addToCart();
+                          }
+                        },
                   child: Container(
                     height: SizeConfig.h(26),
                     child: Row(
@@ -716,17 +718,17 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
               children: [
                 ...List.generate(
                     images.length,
-                        (index) => Container(
-                      margin:
-                      EdgeInsets.symmetric(horizontal: SizeConfig.h(7)),
-                      height: 2,
-                      width: SizeConfig.h(50),
-                      decoration: BoxDecoration(
-                        color: index == currentIndex
-                            ? AppStyle.secondaryColor
-                            : AppStyle.disabledBorderColor,
-                      ),
-                    ))
+                    (index) => Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: SizeConfig.h(7)),
+                          height: 2,
+                          width: SizeConfig.h(50),
+                          decoration: BoxDecoration(
+                            color: index == currentIndex
+                                ? AppStyle.secondaryColor
+                                : AppStyle.disabledBorderColor,
+                          ),
+                        ))
               ],
             ),
           )
@@ -758,10 +760,11 @@ class _ProductsDetailsPageState extends State<ProductsDetailsPage> {
                 if (preferences != null)
                   openWhatsapp(preferences!["support_phone"]);
               },
-              child: Icon(
-                Icons.whatsapp,
+              child: Image.asset(
+                "assets/whatsapp.png",
                 color: AppStyle.primaryColor,
-                size: SizeConfig.w(20),
+                height: SizeConfig.w(20),
+                width: SizeConfig.w(20),
               ),
             ),
           SizedBox(

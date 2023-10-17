@@ -95,20 +95,20 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                 selectedCategoryId.categoryId) {
               dynamicFields = homeSettingsBloc.settings!.categories!
                   .firstWhere((element) =>
-              element.id.toString() == widget.category.id.toString())
+                      element.id.toString() == widget.category.id.toString())
                   .dynamicFilterFields;
               filterValues =
-              state.dynamicFilters != null ? state.dynamicFilters : null;
+                  state.dynamicFilters != null ? state.dynamicFilters : null;
             } else {
               dynamicFields = homeSettingsBloc.settings!.categories!
                   .firstWhere((element) =>
-              element.id.toString() == widget.category.id.toString())
+                      element.id.toString() == widget.category.id.toString())
                   .subCategories!
                   .firstWhere((element) =>
-              element.id.toString() == selectedCategoryId.categoryId)
+                      element.id.toString() == selectedCategoryId.categoryId)
                   .dynamicFilterFields;
               filterValues =
-              state.dynamicFilters != null ? state.dynamicFilters : null;
+                  state.dynamicFilters != null ? state.dynamicFilters : null;
             }
           });
         }
@@ -134,7 +134,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                               if (filterValues != null) {
                                 for (int i = 0; i < filterValues!.length; i++) {
                                   filterValues![i] =
-                                  filterValues![i] is List ? [] : null;
+                                      filterValues![i] is List ? [] : null;
                                 }
                                 sl<HomesettingsBloc>()
                                     .add(ChangeDynamicValues(filterValues!));
@@ -162,8 +162,8 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                                     Navigator.pop(context);
                                     Map<int, dynamic> parsedValues = {};
                                     for (int i = 0;
-                                    i < filterValues!.length;
-                                    i++) {
+                                        i < filterValues!.length;
+                                        i++) {
                                       if (filterValues![i] is String) {
                                         parsedValues[dynamicFields![i].id] =
                                             dynamicFields![i]
@@ -187,7 +187,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                                       LoadEvent(
                                         {
                                           'categoryId':
-                                          widget.category.id.toString(),
+                                              widget.category.id.toString(),
                                           '_field_values': parsedValues,
                                         },
                                       ),
@@ -213,171 +213,171 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                               }
                               return dynamicFields![index].type == 'select'
                                   ? Padding(
-                                padding: EdgeInsets.all(SizeConfig.w(10)),
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      dynamicFields![index].title,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: AppStyle.secondaryColor,
-                                        fontSize: SizeConfig.h(18),
-                                      ),
-                                    ),
-                                    DropdownButton<String>(
-                                        value: filterValues![index],
-                                        isExpanded: true,
-                                        items: dynamicFields![index]
-                                            .options
-                                            .map((e) =>
-                                            DropdownMenuItem<String>(
-                                              child: Text(
-                                                e,
-                                                style: TextStyle(
-                                                  fontWeight:
-                                                  FontWeight.w500,
-                                                  color: AppStyle
-                                                      .secondaryColor,
-                                                  fontSize:
-                                                  SizeConfig.h(
-                                                      16),
-                                                ),
-                                              ),
-                                              value: e,
-                                            ))
-                                            .toList(),
-                                        onChanged: (String? value) {
-                                          filterValues![index] = value!;
-                                          homeSettingsBloc.add(
-                                              ChangeDynamicValues(
-                                                  filterValues!));
-                                        }),
-                                  ],
-                                ),
-                              )
-                                  : dynamicFields![index].type == 'radio'
-                                  ? Padding(
-                                padding:
-                                EdgeInsets.all(SizeConfig.w(10)),
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      dynamicFields![index].title,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color:
-                                        AppStyle.secondaryColor,
-                                        fontSize: SizeConfig.h(18),
-                                      ),
-                                    ),
-                                    ...dynamicFields![index]
-                                        .options
-                                        .map((e) => RadioListTile(
-                                      contentPadding:
-                                      EdgeInsets.zero,
-                                      groupValue:
-                                      filterValues?[index]
-                                      as String?,
-                                      onChanged:
-                                          (String? value) {
-                                        filterValues![index] =
-                                        value!;
-                                        homeSettingsBloc.add(
-                                            ChangeDynamicValues(
-                                                filterValues!));
-                                      },
-                                      value: e,
-                                      activeColor: AppStyle
-                                          .secondaryColor,
-                                      title: Text(
-                                        e,
-                                        style: TextStyle(
-                                          fontWeight:
-                                          FontWeight.w500,
-                                          color: AppStyle
-                                              .secondaryColor,
-                                          fontSize:
-                                          SizeConfig.h(
-                                              16),
-                                        ),
-                                      ),
-                                    ))
-                                        .toList(),
-                                  ],
-                                ),
-                              )
-                                  : dynamicFields![index].type == 'checkbox'
-                                  ? Padding(
-                                padding: EdgeInsets.all(
-                                    SizeConfig.w(10)),
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      dynamicFields![index].title,
-                                      style: TextStyle(
-                                        fontWeight:
-                                        FontWeight.w700,
-                                        color: AppStyle
-                                            .secondaryColor,
-                                        fontSize:
-                                        SizeConfig.h(18),
-                                      ),
-                                    ),
-                                    ...dynamicFields![index]
-                                        .options
-                                        .map((e) =>
-                                        CheckboxListTile(
-                                          contentPadding:
-                                          EdgeInsets.zero,
-                                          onChanged:
-                                              (bool? value) {
-                                            (filterValues![index]
-                                            as List)
-                                                .contains(
-                                                e)
-                                                ? (filterValues![
-                                            index]
-                                            as List)
-                                                .remove(e)
-                                                : (filterValues![
-                                            index]
-                                            as List)
-                                                .add(e);
-                                            homeSettingsBloc.add(
-                                                ChangeDynamicValues(
-                                                    filterValues!));
-                                          },
-                                          value: (filterValues![
-                                          index]
-                                          as List)
-                                              .contains(e),
-                                          activeColor: AppStyle
-                                              .secondaryColor,
-                                          title: Text(
-                                            e,
+                                      padding: EdgeInsets.all(SizeConfig.w(10)),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            dynamicFields![index].title,
                                             style: TextStyle(
-                                              fontWeight:
-                                              FontWeight
-                                                  .w500,
-                                              color: AppStyle
-                                                  .secondaryColor,
-                                              fontSize:
-                                              SizeConfig
-                                                  .h(16),
+                                              fontWeight: FontWeight.w700,
+                                              color: AppStyle.secondaryColor,
+                                              fontSize: SizeConfig.h(18),
                                             ),
                                           ),
-                                        ))
-                                        .toList(),
-                                  ],
-                                ),
-                              )
-                                  : Container();
+                                          DropdownButton<String>(
+                                              value: filterValues![index],
+                                              isExpanded: true,
+                                              items: dynamicFields![index]
+                                                  .options
+                                                  .map((e) =>
+                                                      DropdownMenuItem<String>(
+                                                        child: Text(
+                                                          e,
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: AppStyle
+                                                                .secondaryColor,
+                                                            fontSize:
+                                                                SizeConfig.h(
+                                                                    16),
+                                                          ),
+                                                        ),
+                                                        value: e,
+                                                      ))
+                                                  .toList(),
+                                              onChanged: (String? value) {
+                                                filterValues![index] = value!;
+                                                homeSettingsBloc.add(
+                                                    ChangeDynamicValues(
+                                                        filterValues!));
+                                              }),
+                                        ],
+                                      ),
+                                    )
+                                  : dynamicFields![index].type == 'radio'
+                                      ? Padding(
+                                          padding:
+                                              EdgeInsets.all(SizeConfig.w(10)),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                dynamicFields![index].title,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  color:
+                                                      AppStyle.secondaryColor,
+                                                  fontSize: SizeConfig.h(18),
+                                                ),
+                                              ),
+                                              ...dynamicFields![index]
+                                                  .options
+                                                  .map((e) => RadioListTile(
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        groupValue:
+                                                            filterValues?[index]
+                                                                as String?,
+                                                        onChanged:
+                                                            (String? value) {
+                                                          filterValues![index] =
+                                                              value!;
+                                                          homeSettingsBloc.add(
+                                                              ChangeDynamicValues(
+                                                                  filterValues!));
+                                                        },
+                                                        value: e,
+                                                        activeColor: AppStyle
+                                                            .secondaryColor,
+                                                        title: Text(
+                                                          e,
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: AppStyle
+                                                                .secondaryColor,
+                                                            fontSize:
+                                                                SizeConfig.h(
+                                                                    16),
+                                                          ),
+                                                        ),
+                                                      ))
+                                                  .toList(),
+                                            ],
+                                          ),
+                                        )
+                                      : dynamicFields![index].type == 'checkbox'
+                                          ? Padding(
+                                              padding: EdgeInsets.all(
+                                                  SizeConfig.w(10)),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    dynamicFields![index].title,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: AppStyle
+                                                          .secondaryColor,
+                                                      fontSize:
+                                                          SizeConfig.h(18),
+                                                    ),
+                                                  ),
+                                                  ...dynamicFields![index]
+                                                      .options
+                                                      .map((e) =>
+                                                          CheckboxListTile(
+                                                            contentPadding:
+                                                                EdgeInsets.zero,
+                                                            onChanged:
+                                                                (bool? value) {
+                                                              (filterValues![index]
+                                                                          as List)
+                                                                      .contains(
+                                                                          e)
+                                                                  ? (filterValues![
+                                                                              index]
+                                                                          as List)
+                                                                      .remove(e)
+                                                                  : (filterValues![
+                                                                              index]
+                                                                          as List)
+                                                                      .add(e);
+                                                              homeSettingsBloc.add(
+                                                                  ChangeDynamicValues(
+                                                                      filterValues!));
+                                                            },
+                                                            value: (filterValues![
+                                                                        index]
+                                                                    as List)
+                                                                .contains(e),
+                                                            activeColor: AppStyle
+                                                                .secondaryColor,
+                                                            title: Text(
+                                                              e,
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: AppStyle
+                                                                    .secondaryColor,
+                                                                fontSize:
+                                                                    SizeConfig
+                                                                        .h(16),
+                                                              ),
+                                                            ),
+                                                          ))
+                                                      .toList(),
+                                                ],
+                                              ),
+                                            )
+                                          : Container();
                             },
                           ),
                         ),
@@ -416,25 +416,25 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                           if (state.items.isEmpty) {
                             return SliverFillRemaining(
                                 child: EmptyPlacholder(
-                                  title: S.of(context).no_result,
-                                  imageName: "assets/noSearch.png",
-                                  subtitle: S.of(context).no_result_subtitle,
-                                  actionTitle: S.of(context).continueShopping,
-                                  onActionTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                ));
+                              title: S.of(context).no_result,
+                              imageName: "assets/noSearch.png",
+                              subtitle: S.of(context).no_result_subtitle,
+                              actionTitle: S.of(context).continueShopping,
+                              onActionTap: () {
+                                Navigator.pop(context);
+                              },
+                            ));
                           }
                           return SliverGrid(
                             gridDelegate:
-                            SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: SizeConfig.h(230),
-                                crossAxisSpacing:
-                                0, //cuase the card already taken margin
-                                mainAxisExtent: 250,
-                                mainAxisSpacing: SizeConfig.h(13)),
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: SizeConfig.h(230),
+                                    crossAxisSpacing:
+                                        0, //cuase the card already taken margin
+                                    mainAxisExtent: 250,
+                                    mainAxisSpacing: SizeConfig.h(13)),
                             delegate:
-                            SliverChildBuilderDelegate((context, index) {
+                                SliverChildBuilderDelegate((context, index) {
                               return ProductCard(product: state.items[index]);
                             }, childCount: state.items.length),
                           );
@@ -496,10 +496,11 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                   if (preferences != null)
                     openWhatsapp(preferences!["support_phone"]);
                 },
-                child: Icon(
-                  Icons.whatsapp,
+                child: Image.asset(
+                  "assets/whatsapp.png",
                   color: AppStyle.primaryColor,
-                  size: SizeConfig.w(20),
+                  height: SizeConfig.w(20),
+                  width: SizeConfig.w(20),
                 ),
               ),
             SizedBox(
@@ -587,7 +588,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                     itemBuilder: (context, index) {
                       if (index == 0) return allProductsSection();
                       final category =
-                      widget.category.subCategories![index - 1];
+                          widget.category.subCategories![index - 1];
                       final isSelected = selectedCategoryId.categoryId ==
                           category.id.toString();
                       return GestureDetector(
@@ -605,7 +606,7 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             boxShadow:
-                            isSelected ? [AppStyle.boxShadow3on6] : null,
+                                isSelected ? [AppStyle.boxShadow3on6] : null,
                             color: isSelected
                                 ? AppStyle.primaryColor
                                 : Colors.white,
@@ -643,17 +644,17 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                                   children: [
                                     Expanded(
                                         child: Text(
-                                          category.title,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              height: 1.1,
-                                              fontSize: 13,
-                                              color: isSelected
-                                                  ? Colors.white
-                                                  : AppStyle.greyDark),
-                                        ))
+                                      category.title,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          height: 1.1,
+                                          fontSize: 13,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : AppStyle.greyDark),
+                                    ))
                                   ],
                                 ),
                               )
@@ -721,15 +722,15 @@ class _CategoryProductsPageState extends State<CategoryProductsPage> {
                 children: [
                   Expanded(
                       child: Text(
-                        S.of(context).all,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            height: 1.1,
-                            fontSize: 13,
-                            color: isSelected ? Colors.white : AppStyle.greyDark),
-                      ))
+                    S.of(context).all,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        height: 1.1,
+                        fontSize: 13,
+                        color: isSelected ? Colors.white : AppStyle.greyDark),
+                  ))
                 ],
               ),
             )

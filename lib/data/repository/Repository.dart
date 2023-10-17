@@ -1,9 +1,7 @@
-
 import 'package:flutter/services.dart';
 
 import 'package:progiom_cms/auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:progiom_cms/core.dart';
@@ -76,25 +74,24 @@ class Repository {
 
   Future<Either<Failure, String>> logInByApple() async {
     try {
-       final credential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      webAuthenticationOptions: WebAuthenticationOptions(
-        clientId: 'demo1.tajraa.com',
-        redirectUri: Uri.parse(
-          'https://demo1.tajraa.com/login/apple/callback',
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: 'demo1.tajraa.com',
+          redirectUri: Uri.parse(
+            'https://demo1.tajraa.com/login/apple/callback',
+          ),
         ),
-      ),
-    );
+      );
 
-    print(credential);
-    return Right(credential.authorizationCode);
+      print(credential);
+      return Right(credential.authorizationCode);
     } catch (e) {
       return left(ServerFailure(e.toString()));
     }
-   
   }
 
   Future<Either<Failure, String>> getGoogleToken() async {

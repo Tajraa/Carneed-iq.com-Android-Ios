@@ -14,19 +14,35 @@
       },
       "oauth_client": [
         {
-          "client_id": "275975164239-bqcj6hilfdqd9t3q04lj7b1loll6e0kr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.progiom.Carneed",
-            "certificate_hash": "7a58a81acc3f40565e09939317453330bddbc749"
-          }
-        },
-        {
-          "client_id": "275975164239-rgrk8qpemb1j03envruvhfj9dt070rdg.apps.googleusercontent.com",
+          "client_id": "275975164239-3rlnofdqaf5qlpd2154ldt213u4a697t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.progiom.Carneed",
             "certificate_hash": "34ed9f6c833f67f42202cc378c97e404bf84fd63"
+          }
+        },
+        {
+          "client_id": "275975164239-8su6jdn1sv04i3tkm899sjrq9dhdujup.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.progiom.Carneed",
+            "certificate_hash": "73293274fbe1c7835f9948bbde054d28a8741e10"
+          }
+        },
+        {
+          "client_id": "275975164239-fro03shmbq0mgp0ep9aqjqhope5gdtq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.progiom.Carneed",
+            "certificate_hash": "389df1ba145e3dc056e417c1a2b6efe2b2cd52d3"
+          }
+        },
+        {
+          "client_id": "275975164239-uv5ido3prg8215h9euh09kcr054sl8fg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.progiom.Carneed",
+            "certificate_hash": "59af31a1887f37638e7e5b4805383cb4155cd02c"
           }
         },
         {
@@ -43,8 +59,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "275975164239-m4j5nfkuf3j44qpmo444s3f2s17s39j3.apps.googleusercontent.com",
+              "client_id": "275975164239-anf348hilo8h2pch28t6vlu8jajenpom.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "275975164239-2smjfgd6qapi36ra9laqfrlnrll0nc8c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.progiom.Carneed"
+              }
             }
           ]
         }

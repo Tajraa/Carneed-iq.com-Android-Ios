@@ -133,9 +133,12 @@ class _CartPageState extends State<CartPage> {
                                   itemBuilder: (context, index) {
                                     if (index >= cart!.itemsList.length)
                                       return buildTotalWidget(
-                                          cart!.subtotalText ?? "",
-                                          cart!.discountPriceText,
-                                          state.isRefreshing);
+                                        cart!.subtotalText ?? "",
+                                        cart!.discountPriceText,
+                                        state.isRefreshing,
+                                        cart!.totalText ?? "",
+                                        cart!.feesText ?? "",
+                                      );
                                     return buildCartProduct(
                                         cart!.itemsList[index], index == 0);
                                   }),
@@ -179,13 +182,13 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Container buildTotalWidget(
-      String total, String? discount, bool isRefreshing) {
+  Container buildTotalWidget(String total, String? discount, bool isRefreshing,
+      String suptotal, String fees) {
     return Container(
         margin: EdgeInsets.symmetric(vertical: SizeConfig.h(5)),
         color: Colors.white,
         width: SizeConfig.screenWidth,
-        height: SizeConfig.h(70),
+        height: SizeConfig.h(150),
         padding: EdgeInsets.symmetric(horizontal: SizeConfig.h(24)),
         child: Row(
           children: [
@@ -197,7 +200,7 @@ class _CartPageState extends State<CartPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      S.of(context).total,
+                      "سعر المنتجات",
                       style: AppStyle.vexa14,
                     )
                   ],
@@ -262,6 +265,53 @@ class _CartPageState extends State<CartPage> {
                             )),
                     ],
                   ),
+
+                Text(
+                  "اجور الشجن",
+                  style: AppStyle.vexa14,
+                ),
+
+                Text(
+                  fees,
+                  style: AppStyle.yaroCut14.copyWith(
+                    fontSize: SizeConfig.h(22),
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.h(22),
+                ),
+                Text(
+                  S.of(context).total,
+                  style: AppStyle.vexa14,
+                ),
+
+                Text(
+                  suptotal,
+                  style: AppStyle.yaroCut14.copyWith(
+                    fontSize: SizeConfig.h(22),
+                  ),
+                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     Text(
+                //       S.of(context).total,
+                //       style: AppStyle.vexa14,
+                //     )
+                //   ],
+                // ),
+                // Row(
+                //   children: [
+                //     Text(
+                //       total,
+                //       style: AppStyle.yaroCut14.copyWith(
+                //           fontSize: SizeConfig.h(16),
+                //           decoration: TextDecoration.lineThrough,
+                //           color: AppStyle.redColor,
+                //           fontFamily: AppStyle.priceFontFamily(discount)),
+                //     )
+                //   ],
+                // ),
               ],
             ),
           ],

@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:progiom_cms/homeSettings.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '/Utils/SizeConfig.dart';
 
 class CarouselSection extends StatefulWidget {
@@ -10,6 +13,8 @@ class CarouselSection extends StatefulWidget {
   @override
   _CarouselSectionState createState() => _CarouselSectionState();
 }
+
+String? spotifyUrl;
 
 class _CarouselSectionState extends State<CarouselSection> {
   int currentCarouselIndex = 0;
@@ -35,17 +40,33 @@ class _CarouselSectionState extends State<CarouselSection> {
                   viewportFraction: SizeConfig.isWideScreen() ? 0.7 : 1),
               items: [
                 for (Slide slide in widget.slides)
-                  Container(
-                    margin: SizeConfig.isWideScreen()
-                        ? EdgeInsets.symmetric(horizontal: SizeConfig.h(12))
-                        : null,
-                    height: SizeConfig.h(154),
-                    width: SizeConfig.screenWidth,
-                    child: GestureDetector(
-                      onTap: () async {},
-                      child:  CachedNetworkImage(
-                        imageUrl: slide.coverImage ?? "",
-                        fit: BoxFit.cover,
+                  InkWell(
+                    onTap: () async {
+                      // if (slide.link != null) {
+                      //   if (await canLaunch(slide.link!)) {
+                      //     launch(slide.link!);
+                      //   }
+                      // }
+                    },
+                    child: Container(
+                      margin: SizeConfig.isWideScreen()
+                          ? EdgeInsets.symmetric(horizontal: SizeConfig.h(12))
+                          : null,
+                      height: SizeConfig.h(154),
+                      width: SizeConfig.screenWidth,
+                      child: GestureDetector(
+                        onTap: () async {
+                          print(slide.link);
+                          if (slide.link != null) {
+                            if (await canLaunch(slide.link!)) {
+                              launch(slide.link!);
+                            }
+                          }
+                        },
+                        child: CachedNetworkImage(
+                          imageUrl: slide.coverImage ?? "",
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),

@@ -3,10 +3,13 @@ import 'package:progiom_cms/auth.dart';
 import 'package:progiom_cms/core.dart';
 import 'package:progiom_cms/homeSettings.dart';
 import 'package:tajra/Ui/BasePage/BasePage.dart';
+import 'package:tajra/Ui/Favorite/FavoritePage.dart';
+import 'package:tajra/Ui/Favorite/bloc/favorite_bloc.dart';
 import '../../Utils/AppSnackBar.dart';
 import '../../Utils/SizeConfig.dart';
 import '../../Utils/Style.dart';
 import 'package:badges/badges.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injections.dart';
 import 'LoginDialoge.dart';
@@ -64,34 +67,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ? Row(
               children: [
                 unreadNotifications == 0
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.notifications,
-                          color: AppStyle.primaryColor,
-                          size: SizeConfig.w(24),
-                        ),
-                        onPressed: () {
-                          if (sl<AuthBloc>().isGuest) {
-                            showLoginDialoge(context);
-                          } else {
-                            unreadNotifications = 0;
-                            sl<HomesettingsBloc>()
-                                .settings
-                                ?.unreadNotifications = 0;
-
-                            Navigator.pushNamed(context, "/notifications");
-                          }
-                        })
-                    : Badge(
-                        position: BadgePosition.topStart(
-                          start: 5,
-                          top: 1,
-                        ),
-                        badgeContent: Text(
-                          unreadNotifications.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 11),
-                        ),
-                        child: IconButton(
+                    ? Row(children: [
+                        IconButton(
                             icon: Icon(
                               Icons.notifications,
                               color: AppStyle.primaryColor,
@@ -108,7 +85,81 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
                                 Navigator.pushNamed(context, "/notifications");
                               }
-                            })),
+                            }),
+                        IconButton(
+                            icon: Icon(
+                              Icons.favorite,
+                              color: AppStyle.primaryColor,
+                              size: SizeConfig.w(24),
+                            ),
+                            onPressed: () {
+                              if (sl<AuthBloc>().isGuest) {
+                                showLoginDialoge(context);
+                              } else {
+                                BlocProvider.of<FavoriteBloc>(context)
+                                    .add(LoadEvent(""));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FavoritePage(
+                                      goHome: () {},
+                                    ),
+                                  ),
+                                );
+                              }
+                            }),
+                      ])
+                    : Badge(
+                        position: BadgePosition.topStart(
+                          start: 5,
+                          top: 1,
+                        ),
+                        badgeContent: Text(
+                          unreadNotifications.toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 11),
+                        ),
+                        child: Padding(
+                            padding: const EdgeInsets.all(11),
+                            child: Row(children: [
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.notifications,
+                                    color: AppStyle.primaryColor,
+                                    size: SizeConfig.w(24),
+                                  ),
+                                  onPressed: () {
+                                    if (sl<AuthBloc>().isGuest) {
+                                      showLoginDialoge(context);
+                                    } else {
+                                      unreadNotifications = 0;
+                                      sl<HomesettingsBloc>()
+                                          .settings
+                                          ?.unreadNotifications = 0;
+
+                                      Navigator.pushNamed(
+                                          context, "/notifications");
+                                    }
+                                  }),
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.notifications,
+                                    color: AppStyle.primaryColor,
+                                    size: SizeConfig.w(24),
+                                  ),
+                                  onPressed: () {
+                                    if (sl<AuthBloc>().isGuest) {
+                                      showLoginDialoge(context);
+                                    } else {
+                                      unreadNotifications = 0;
+                                      sl<HomesettingsBloc>()
+                                          .settings
+                                          ?.unreadNotifications = 0;
+
+                                      Navigator.pushNamed(
+                                          context, "/notifications");
+                                    }
+                                  }),
+                            ]))),
                 Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(right: 30),
@@ -129,10 +180,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                             if (preferences != null)
                               openWhatsapp(preferences!["support_phone"]);
                           },
-                          child: Icon(
-                            Icons.whatsapp,
+                          child: Image.asset(
+                            "assets/whatsapp.png",
                             color: AppStyle.primaryColor,
-                            size: SizeConfig.w(20),
+                            height: SizeConfig.w(20),
+                            width: SizeConfig.w(20),
                           ),
                         ),
                       SizedBox(width: 15),

@@ -1,19 +1,16 @@
 import 'dart:ui';
-import 'package:progiom_cms/core.dart';
 import 'package:progiom_cms/homeSettings.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:progiom_cms/auth.dart';
+import 'package:tajra/Ui/Blog/presentation/bloc/homesettings_bloc.dart';
+import 'package:tajra/Ui/Blog/presentation/widgets/Blog.dart';
 import 'package:tajra/Ui/Cart/bloc/cart_bloc.dart';
-import 'package:tajra/Ui/Favorite/bloc/favorite_bloc.dart';
-import '/App/Widgets/CustomAppBar.dart';
-
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '/App/Widgets/LoginDialoge.dart';
 import '/Ui/Cart/CartPage.dart';
 import '/Ui/Categories/CategoriesPage.dart';
-import '/Ui/Favorite/FavoritePage.dart';
 import '/Ui/Home/HomePage.dart';
 import '/Ui/Profile/ProfilePage.dart';
 import '/Utils/AppSnackBar.dart';
@@ -21,7 +18,7 @@ import '/Utils/SizeConfig.dart';
 import '/Utils/Style.dart';
 import '/generated/l10n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_facebook_keyhash/flutter_facebook_keyhash.dart';
 import '../../injections.dart';
 part 'widgets/base_tutorial.dart';
 
@@ -51,10 +48,18 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
   final GlobalKey cartNavKey = GlobalKey();
   final GlobalKey favNavKey = GlobalKey();
   final GlobalKey profileNavKey = GlobalKey();
+  void printKeyHash() async {
+    String? key = await FlutterFacebookKeyhash.getFaceBookKeyHash ??
+        'Unknown platform version';
+    print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+    print(key);
+    print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+  }
 
   @override
   void initState() {
     super.initState();
+    printKeyHash();
     homeAnimationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     profileAnimationController =
@@ -97,6 +102,8 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var settings = sl<HomesettingsBloc>().settings!;
+
     SizeConfig().init(context);
     DateTime? currentBackPressTime;
     Future<bool> onWillPop() async {
@@ -190,19 +197,7 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
                   });
                 },
               ),
-              FavoritePage(
-                goHome: () {
-                  searchAnimationController.reverse();
-                  profileAnimationController.reverse();
-                  chatAnimationController.reverse();
-
-                  homeAnimationController.forward();
-                  setState(() {
-                    oldPageIndex = pageIndex;
-                    pageIndex = 0;
-                  });
-                },
-              ),
+              BlogPage(),
               ProfilePage(),
             ],
           )),
@@ -284,7 +279,7 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
           S.of(context).cart_tour, "assets/cart.svg"),
     );
     targets!.add(
-      buildNavTargetFocus("favNavKey", favNavKey, S.of(context).myFavorites,
+      buildNavTargetFocus("favNavKey", favNavKey, S.of(context).blog,
           S.of(context).favorite_tour, "assets/fav.svg"),
     );
 
@@ -424,7 +419,7 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.favorite,
+                            Icons.edit_location_alt,
                             color: pageIndex == 3
                                 ? AppStyle.primaryColor
                                 : AppStyle.secondaryColor,
@@ -433,7 +428,7 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
                           ),
                           if (pageIndex == 3)
                             Text(
-                              S.of(context).myFavorites,
+                              S.of(context).blog,
                               maxLines: 1,
                               style: AppStyle.vexa11.copyWith(
                                 color: pageIndex == 3
@@ -444,24 +439,14 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
                         ],
                       ),
                       onPressed: () {
-                        if (sl<AuthBloc>().isGuest) {
-                          showLoginDialoge(context);
-                        } else {
-                          searchAnimationController.reverse();
-                          profileAnimationController.reverse();
-                          chatAnimationController.forward();
-
-                          homeAnimationController.reverse();
-
-                          setState(() {
-                            oldPageIndex = pageIndex;
-
-                            pageIndex = 3;
-                          });
-
-                          BlocProvider.of<FavoriteBloc>(context)
-                              .add(LoadEvent(""));
-                        }
+                        searchAnimationController.reverse();
+                        profileAnimationController.reverse();
+                        chatAnimationController.forward();
+                        homeAnimationController.reverse();
+                        setState(() {
+                          oldPageIndex = pageIndex;
+                          pageIndex = 3;
+                        });
                       },
                     ),
                   ),

@@ -3,11 +3,11 @@
     <string name="app_name">Carneed-iq.com</string>
 
     <!-- Replace "000000000000" with your Facebook App ID here. -->
-    <string name="facebook_app_id">429404528873756</string>
+    <string name="facebook_app_id">550364213302926</string>
 
     <!--
       Replace "000000000000" with your Facebook App ID here.
       **NOTE**: The scheme needs to start with `fb` and then your ID.
     -->
-    <string name="fb_login_protocol_scheme">fb429404528873756</string>
+    <string name="fb_login_protocol_scheme">fb550364213302926</string>
 </resources>

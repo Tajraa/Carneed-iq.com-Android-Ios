@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure."),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "blog": MessageLookupByLibrary.simpleMessage("Blog"),
         "blogs": MessageLookupByLibrary.simpleMessage("Blog"),
         "brand": MessageLookupByLibrary.simpleMessage("Brand"),
         "buyNow": MessageLookupByLibrary.simpleMessage("buy now"),
@@ -156,7 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expiryDate": MessageLookupByLibrary.simpleMessage("Expiration date"),
         "facebook": MessageLookupByLibrary.simpleMessage("Facebook"),
         "favorite_tour": MessageLookupByLibrary.simpleMessage(
-            "Here you will find the products you have added to your favourites."),
+            "Here you can find the latest updates."),
         "featured_products":
             MessageLookupByLibrary.simpleMessage("New products"),
         "features": MessageLookupByLibrary.simpleMessage("Features"),
@@ -165,7 +166,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Forgot your password?"),
         "fullName": MessageLookupByLibrary.simpleMessage("Full name"),
         "google": MessageLookupByLibrary.simpleMessage("Google"),
-        "haha": MessageLookupByLibrary.simpleMessage("aa"),
         "haveAnAccount":
             MessageLookupByLibrary.simpleMessage("Have an account?"),
         "here": MessageLookupByLibrary.simpleMessage("Here"),

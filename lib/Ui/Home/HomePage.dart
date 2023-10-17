@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:progiom_cms/core.dart';
 import 'package:progiom_cms/homeSettings.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:tajra/Ui/Blog/presentation/widgets/BlogDetailsPage.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '/App/App.dart';
 import '/App/Widgets/AppLoader.dart';
@@ -14,6 +16,7 @@ import './/Utils/SizeConfig.dart';
 import './/Utils/Style.dart';
 import '../../injections.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:progiom_cms/homeSettings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,20 +25,58 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+List<Slide> sliders = [];
+List<Slide> slidersEnd = [];
+
 class _HomePageState extends State<HomePage> {
   int currentCarouselIndex = 0;
 
   @override
   void initState() {
-    super.initState();
     UniLinks.initDynamicLinks((id) {
-      Navigator.pushNamed(context, "/productDetails", arguments: id);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => BlogsDetailsPage(
+                id: id,
+              )));
+    }, (id) {
+      print('kkkkkkkkkkkkkkkk');
+      Navigator.pushNamed(context, "/productDetails", arguments: {"id": id});
     });
-    
+    super.initState();
+
+    GetSliders(sl()).call(NoParams()).then((value) => value.fold((l) {
+          setState(() {
+            print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+            print(l);
+            print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+          });
+        }, (r) {
+          setState(() {
+            print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+            sliders = r;
+            print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+          });
+        }));
+    GetSlidersEnd(sl()).call(NoParams()).then((value) => value.fold((l) {
+          setState(() {
+            print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+            print(l);
+            print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+          });
+        }, (r) {
+          setState(() {
+            print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+            slidersEnd = r;
+            print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+          });
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
+    print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+
+    int inview = 0;
     var settings = sl<HomesettingsBloc>().settings!;
     return Scaffold(
       body: RefreshIndicator(
@@ -79,38 +120,63 @@ class _HomePageState extends State<HomePage> {
                         for (CategoryFeatured section
                             in settings.categoriesFeatured ?? [])
                           if (section.posts.data.isNotEmpty)
-                            Column(
-                              children: [
-                                buildSectionLabel(section.title, () {
-                                  for (Category cat
-                                      in settings.categories ?? []) {
-                                    if (cat.id == section.id) {
-                                      Navigator.pushNamed(
-                                          context, "/categoryProducts",
-                                          arguments: {
-                                            "category": cat,
-                                            "id": section.id
-                                          });
-                                      return;
-                                    } else {
-                                      for (Category subCat
-                                          in cat.subCategories ?? []) {
-                                        if (subCat.id == section.id) {
-                                          Navigator.pushNamed(
-                                              context, "/categoryProducts",
-                                              arguments: {
-                                                "category": cat,
-                                                "id": section.id
-                                              });
-                                          return;
+                            if (section.id ==
+                                settings.categoriesFeatured![2].id)
+                              if (sliders.isNotEmpty)
+                                SizedBox(
+                                    height: SizeConfig.h(165),
+                                    child: Center(
+                                        child:
+                                            CarouselSection(slides: sliders)))
+                              else
+                                Container()
+                            //   Shimmer.fromColors(
+                            //     baseColor: Colors.grey[300]!,
+                            //     highlightColor: Colors.grey[100]!,
+                            //     child: Container(
+                            //       width: double.infinity,
+                            //       height: SizeConfig.h(165),
+                            //       color: Colors.grey,
+                            //     ),
+                            //   )
+                            else
+                              Column(
+                                children: [
+                                  buildSectionLabel(section.title, () {
+                                    for (Category cat
+                                        in settings.categories ?? []) {
+                                      if (cat.id == section.id) {
+                                        Navigator.pushNamed(
+                                            context, "/categoryProducts",
+                                            arguments: {
+                                              "category": cat,
+                                              "id": section.id
+                                            });
+                                        return;
+                                      } else {
+                                        for (Category subCat
+                                            in cat.subCategories ?? []) {
+                                          if (subCat.id == section.id) {
+                                            Navigator.pushNamed(
+                                                context, "/categoryProducts",
+                                                arguments: {
+                                                  "category": cat,
+                                                  "id": section.id
+                                                });
+                                            return;
+                                          }
                                         }
                                       }
                                     }
-                                  }
-                                }),
-                                buildProductsSection(section),
-                              ],
-                            )
+                                  }),
+                                  buildProductsSection(section),
+                                ],
+                              ),
+                        if (slidersEnd.isNotEmpty)
+                          SizedBox(
+                              height: SizeConfig.h(165),
+                              child: Center(
+                                  child: CarouselSection(slides: slidersEnd)))
                       ],
                       SizedBox(
                         height: SizeConfig.h(AppStyle.bottomNavHieght),
@@ -208,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                        height: 1.1, fontSize: 13, color: AppStyle.greyDark),
+                      height: 1.1, fontSize: 13, color: AppStyle.greyDark),
                 ))
               ],
             ),

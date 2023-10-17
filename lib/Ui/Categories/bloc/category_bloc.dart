@@ -11,7 +11,6 @@ class CategoryBloc extends SimpleLoaderBloc<List<Product>> {
   int page = 0;
   int? minPrice;
   int? maxPrice;
-
   String orderColumn = "created_at";
   String orderDirection = "asc";
   int? categoryId;

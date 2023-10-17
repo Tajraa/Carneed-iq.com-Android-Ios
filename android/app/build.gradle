@@ -37,8 +37,8 @@ android {
         applicationId "com.progiom.Carneed"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 5
-        versionName "1.5"
+        versionCode 6
+        versionName "1.6"
         multiDexEnabled true
     }
 def keystoreProperties = new Properties()

@@ -5,11 +5,15 @@ import 'package:progiom_cms/core.dart';
 import 'package:progiom_cms/ecommerce.dart';
 import 'package:progiom_cms/homeSettings.dart';
 import 'package:progiom_cms/notifications.dart';
+import 'package:tajra/Ui/Blog/data/datasources/HomeSettingsApi.dart';
+import 'package:tajra/Ui/Blog/data/repositories/settings_repo_impl.dart';
+import 'package:tajra/Ui/Blog/presentation/bloc/bloc.dart';
 import './/constants.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'App/App.dart';
+import 'Ui/Blog/domain/repositories/settings_repository.dart';
 import 'data/httpService/http_Service.dart';
 import 'data/repository/Repository.dart';
 import 'data/sharedPreferences/SharedPrefHelper.dart';
@@ -40,6 +44,13 @@ Future<void> initInjections() async {
   initNotificationsInjections();
 
   sl.registerLazySingleton<HomesettingsBloc>(() => HomesettingsBloc());
+
+  sl.registerLazySingleton<BlogApi>(() => BlogApi());
+
+  sl.registerLazySingleton<BlogRepository>(() => BlogRepositoryImpl(
+        sl(),
+      ));
+
   sl.registerLazySingleton<PrefsHelper>(() => PrefsHelper.pref);
   sl.registerLazySingleton<HttpSerivce>(() => HttpSerivce());
   sl.registerLazySingleton<Repository>(() => Repository(sl(), sl()));

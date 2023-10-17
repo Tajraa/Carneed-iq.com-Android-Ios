@@ -780,6 +780,8 @@ class S {
     );
   }
 
+  // skipped getter for the 'continueلآمخل' key
+
   /// `طلباتي`
   String get orderHistory {
     return Intl.message(
@@ -1900,10 +1902,10 @@ class S {
     );
   }
 
-  /// `هنا تجد المنتجات التي قمت بإضافتها للمفضلة.`
+  /// `هنا تجد اخر المستجدات.`
   String get favorite_tour {
     return Intl.message(
-      'هنا تجد المنتجات التي قمت بإضافتها للمفضلة.',
+      'هنا تجد اخر المستجدات.',
       name: 'favorite_tour',
       desc: '',
       args: [],
@@ -2200,11 +2202,11 @@ class S {
     );
   }
 
-  /// `aa`
-  String get haha {
+  /// `المدونة`
+  String get blog {
     return Intl.message(
-      'aa',
-      name: 'haha',
+      'المدونة',
+      name: 'blog',
       desc: '',
       args: [],
     );

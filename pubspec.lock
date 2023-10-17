@@ -203,7 +203,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.6"
   equatable:
     dependency: transitive
     description:
@@ -321,6 +321,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.0+2"
+  flutter_facebook_keyhash:
+    dependency: "direct main"
+    description:
+      name: flutter_facebook_keyhash
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   flutter_html:
     dependency: "direct main"
     description:
@@ -518,13 +525,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.11"
-  material_color_utilities:
-    dependency: transitive
-    description:
-      name: material_color_utilities
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.3"
   meta:
     dependency: transitive
     description:
@@ -724,7 +724,7 @@ packages:
   progiom_cms:
     dependency: "direct main"
     description:
-      path: "../progiom_cms"
+      path: "../cms"
       relative: true
     source: path
     version: "0.0.1"
@@ -956,7 +956,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.8"
+    version: "0.4.3"
   tutorial_coach_mark:
     dependency: "direct main"
     description:
@@ -993,12 +993,12 @@ packages:
     source: hosted
     version: "0.1.0"
   url_launcher:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.20"
+    version: "6.1.5"
   url_launcher_android:
     dependency: transitive
     description:
@@ -1033,7 +1033,7 @@ packages:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.1.0"
   url_launcher_web:
     dependency: transitive
     description:

@@ -185,7 +185,7 @@
   "home_subtitle_tour": "Here you will find the featured products and the latest offers.",
   "categories_tour": "From here you can access the main categories.",
   "cart_tour": "Here you will find the products that have been added to the cart to continue the purchase process.",
-  "favorite_tour": "Here you will find the products you have added to your favourites.",
+  "favorite_tour": "Here you can find the latest updates.",
   "profile_tour": "Where you will find your personal information and previous requests.",
   "search_tour": "To search for any product with the ability to filter by (price, rating, rating..).",
   "delete_tour": "To delete the product from the cart, Swip the product",
@@ -214,5 +214,7 @@
   "dont_have_points_enogh": "you don't have enough points",
   "clear": "Clear",
   "choose_value": "Choose value",
-  "phone_number": "Phone number"
+  "phone_number": "Phone number",
+  "blog":"Blog"
+
 }
